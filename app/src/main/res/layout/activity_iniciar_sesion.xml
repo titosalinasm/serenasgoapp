@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/input_padding"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@mipmap/logoserapp_sesion" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etusuario"
+            android:hint="Escriba su correo"
+            android:padding="@dimen/input_padding"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@mipmap/ic_account_circle_black_24dp"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorBlanco"
+            android:textColorHint="@color/colorBlanco"
+            android:textStyle="italic"
+
+ />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/etclave"
+            android:hint="Contraseña"
+            android:drawableLeft="@mipmap/ic_lock_black_24dp"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorBlanco"
+            android:textStyle="italic"
+            android:textColorHint="@color/colorBlanco"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bingresar"
+            android:text="Ingresa con tu correo"
+            android:elevation="4dp"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryLight" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Aún no tienes una cuenta? Registrate"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorPrimaryLight"
+            android:allowUndo="false"
+            android:focusable="false"
+            android:textIsSelectable="false"
+            android:theme="@style/AlertDialog.AppCompat"
+            android:textStyle="italic"
+            android:id="@+id/tvregistrate"
+            android:height="@dimen/input_size_height"
+            android:paddingTop="10dp"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:id="@+id/bfacebook"
+            android:text="Iniciar con Facebook"
+            android:elevation="4dp"
+            android:background="@drawable/myrect"
+            android:textStyle="bold"
+            android:paddingLeft="6dp"
+            android:textSize="14dp"
+            android:layout_margin="9dp"
+            android:drawableLeft="@mipmap/logo_login_facebook"
+            android:textColor="#3b5998"
+            android:layout_marginTop="10dp"
+            />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_margin="6dp"
+
+            />
+
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "819202283967",
+    "project_id": "serenasgoapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819202283967:android:b4aab92b249ef5ec",
+        "android_client_info": {
+          "package_name": "com.titosalinasm.org.serenasgoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819202283967-qm16eud0rj60tohdn3actt537hn7c51o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.titosalinasm.org.serenasgoapp",
+            "certificate_hash": "CE006AD56A46AF8E57175D2E8F130AF50F249077"
+          }
+        },
+        {
+          "client_id": "819202283967-utld7g732d2jhjc8invjcacog8bmil6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa0jeaC9jKfLGHQ0bQmSr671_-B004JTM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

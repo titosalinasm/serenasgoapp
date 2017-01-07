@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    android:background="@color/colorPrimaryLight"
+    android:focusable="true">
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/ivatraz"
+            android:src="@mipmap/ic_arrow_back_white_24dp"
+            android:paddingRight="20dp"
+
+            />
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@color/colorBlanco"
+        android:layout_margin="@dimen/input_margin"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NOMBRES Y APELLIDOS"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorSecondaryText"
+            android:layout_marginLeft="10dp"
+            android:textIsSelectable="false"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etnombres"
+            android:hint="Nombres"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="italic"
+            android:textColorHint="@color/colorDivider"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etapellidos"
+            android:hint="Apellidos"
+            android:textStyle="italic"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColorHint="@color/colorDivider"
+            android:textColor="@color/colorSecondaryText"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GENERO"
+            android:textColor="@color/colorSecondaryText"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:textIsSelectable="false"
+            android:theme="@style/AlertDialog.AppCompat"
+            android:textStyle="bold"
+            />
+
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hombre"
+                    android:id="@+id/rhombre"
+                    android:layout_gravity="center|left"
+                    android:textColor="@color/colorDivider"
+                    android:layout_marginLeft="10dp"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mujer"
+                    android:id="@+id/rmujer"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center|right"
+                    android:textColor="@color/colorDivider"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rotro"
+                    android:layout_marginLeft="10dp"
+                    android:text="Otro"
+                    android:textColor="@color/colorDivider"
+                    android:layout_gravity="center|right" />
+            </RadioGroup>
+    </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EXTRAS (Opcional)"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textIsSelectable="false"
+            android:theme="@style/AlertDialog.AppCompat"
+            android:textStyle="bold"
+            android:textColor="@color/colorSecondaryText"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etdireccion"
+            android:hint="Dirección"
+            android:textStyle="italic"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorSecondaryText"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/ettelefono"
+            android:hint="Celular"
+            android:textStyle="italic"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorSecondaryText"
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bregistrarme"
+        android:text="Registrarme"
+        android:elevation="4dp"
+        android:textStyle="normal|bold"
+        android:padding="@dimen/input_padding"
+        android:layout_margin="@dimen/input_margin"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorBlanco" />
+</LinearLayout>
+</ScrollView>
