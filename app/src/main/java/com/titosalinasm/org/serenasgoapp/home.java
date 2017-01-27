@@ -71,6 +71,7 @@ public class home extends AppCompatActivity
 
     ImageView fotoperfil;
     TextView tvnombresapellidos;
+
     TextView tvcorreoelectronico;
     TextView tv_finpublic;
     RequestQueue requestQueue;
@@ -115,7 +116,7 @@ public class home extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
+                Log.d("", "fwefwef");
                 //String valuess = dataSnapshot.getValue(String.class);
                 if(variablesGlobales.sucesofirebase!=1) {
                     displayNotification();
