@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -13,9 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -27,7 +30,8 @@ import java.util.regex.Pattern;
 
 public class sesionMovilUser {
     private static final String TAG = sesionMovilUser.class.getSimpleName();
-
+    private ListView lista;
+    private Adaptador adapter;
     public void estado_sesion_movil(final Context context, final RequestQueue req, final String ime){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"estado_sesion_movil.php",
@@ -315,6 +319,7 @@ public class sesionMovilUser {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
                             //verifica si el usuario google esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
+
                                 //envia al activity principal
                                 Intent intent = new Intent(context, home.class);
                                 intent.putExtra("usuario",respuestaJSON.getJSONObject("usuariocompleto").getString("nombre_usuario"));
@@ -353,6 +358,8 @@ public class sesionMovilUser {
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
+
+
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static boolean validateEmail(String email) {
         // Compiles the given regular expression into a pattern.

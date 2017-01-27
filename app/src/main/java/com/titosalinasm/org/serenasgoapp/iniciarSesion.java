@@ -34,7 +34,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
-
 import java.util.Arrays;
 
 public class iniciarSesion extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -73,7 +72,6 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                           /*informacion de usuario de facebook*/
-
                         Profile profile = Profile.getCurrentProfile();
                         sesionMovilUser smu=new sesionMovilUser();
 
@@ -236,7 +234,6 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
                 }else{
                     Toast.makeText(iniciarSesion.this, "Escribe una contraseña de por lo menos 6 dígitos.", Toast.LENGTH_LONG).show();
                 }
-
             }else{
                 Toast.makeText(iniciarSesion.this, "Escribe un correo electonico válido.", Toast.LENGTH_LONG).show();
             }

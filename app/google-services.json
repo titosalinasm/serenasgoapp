@@ -1,19 +1,21 @@
 {
   "project_info": {
-    "project_number": "819202283967",
-    "project_id": "serenasgoapp"
+    "project_number": "1067507386029",
+    "firebase_url": "https://fir-salinas.firebaseio.com",
+    "project_id": "firebase-salinas",
+    "storage_bucket": "firebase-salinas.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:819202283967:android:b4aab92b249ef5ec",
+        "mobilesdk_app_id": "1:1067507386029:android:b4aab92b249ef5ec",
         "android_client_info": {
           "package_name": "com.titosalinasm.org.serenasgoapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "819202283967-qm16eud0rj60tohdn3actt537hn7c51o.apps.googleusercontent.com",
+          "client_id": "1067507386029-iha4o0m6dg370taufapapb3tb5q2eipu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.titosalinasm.org.serenasgoapp",
@@ -21,25 +23,37 @@
           }
         },
         {
-          "client_id": "819202283967-utld7g732d2jhjc8invjcacog8bmil6i.apps.googleusercontent.com",
+          "client_id": "1067507386029-4p8mvnhtjpin6i0o4hpkof6b4t394d67.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1067507386029-lr3ro8l4q84ag2iqvkhutvb36pgtsbf2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBa0jeaC9jKfLGHQ0bQmSr671_-B004JTM"
+          "current_key": "AIzaSyAK3yqBKLo4E1dWzcF-vxVtEJiT0lDgYL8"
         }
       ],
       "services": {
         "analytics_service": {
-          "status": 1
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-90603489-1"
+          }
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067507386029-4p8mvnhtjpin6i0o4hpkof6b4t394d67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
