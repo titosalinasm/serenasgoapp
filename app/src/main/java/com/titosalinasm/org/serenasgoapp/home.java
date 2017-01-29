@@ -1,19 +1,29 @@
 package com.titosalinasm.org.serenasgoapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentHostCallback;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,49 +57,65 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import android.support.v4.app.DialogFragment;
 
 public class home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
-
+        implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
+    //Identificadores del home
     TextView tvcodigo;
-
     ImageView fotoperfil;
     TextView tvnombresapellidos;
-
     TextView tvcorreoelectronico;
     TextView tv_finpublic;
+    //.Identificadores del home
+
+    //Llamada Volley
     RequestQueue requestQueue;
+    //.Llamada Volley
+
+    //ArrayList para el Adaptador
     ArrayList<TCardview>  model=new ArrayList<>();
-    //listview tito
+    //.ArrayList para el Adaptador
+
+    //ListView Adaptador
     private ListView lista;
     private Adaptador adapter;
+    //ListView Adaptador
+
+    //Refresh tipo facebook
     private SwipeRefreshLayout swipeContainer;
-    //TAB
+    //.Refresh tipo facebook
 
 
-    //FIN TAB
-    //Real Time
+    //Base de datos Firebase
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference publicacionRef = ref.child("publicacion");
+    //.Base de datos Firebase
 
-
-    @Override
+    //Temporizador
+    private CountDownTimer countDownTimer;
+    //.Temporizador
+     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -110,16 +136,18 @@ public class home extends AppCompatActivity
         lista=(ListView)findViewById(R.id.h_lv_modelo);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlContainer);
         swipeContainer.setOnRefreshListener(this);
-
-
         publicacionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Log.d("", "fwefwef");
-                //String valuess = dataSnapshot.getValue(String.class);
-                if(variablesGlobales.sucesofirebase!=1) {
-                    displayNotification();
+                if(variablesGlobales.sucesofirebase>1) {
+                    /*
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    String titulo="";
+                    while (i.hasNext()){
+                        titulo=((DataSnapshot)i.next()).child("titulo").getValue().toString();
+                    }
+                    */
                     swipeContainer.setRefreshing(true);
                     requestQueue = Volley.newRequestQueue(home.this);
                     model=new ArrayList<>();
@@ -130,11 +158,11 @@ public class home extends AppCompatActivity
                 }else{
                     variablesGlobales.sucesofirebase++;
                 }
-                //Toast.makeText(home.this, "Se publico algo nuevo "+valuess , Toast.LENGTH_SHORT).show();
-                //Log.d("abelerror", valuess);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         });
         lista.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -167,7 +195,6 @@ public class home extends AppCompatActivity
         });
         // tvcodigo.setText(imei);
         //TAB
-
         Resources res = getResources();
         TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
         tabs.setup();
@@ -196,14 +223,27 @@ public class home extends AppCompatActivity
         //FIN TAB
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public boolean onTouch(View v, MotionEvent event) {
+                android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+                timesos d=new timesos();
+
+                int m=event.getAction();
+               switch (m){
+                   case MotionEvent.ACTION_DOWN:
+                       d.show(manager, "Timer Sos");
+                       d.comenzar();
+                       break;
+                   case MotionEvent.ACTION_UP:
+                       d.cancelar();
+                       break;
+                   default:
+                       return true;
+                        }
+                return true;
             }
         });
 
@@ -223,20 +263,9 @@ public class home extends AppCompatActivity
         Glide.with(home.this).load(foto).diskCacheStrategy(DiskCacheStrategy.ALL).into(fotoperfil);
         tvnombresapellidos.setText(nombres+" "+apellidos);
         tvcorreoelectronico.setText(usuario);
-
         navigationView.setNavigationItemSelectedListener(null);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -244,7 +273,6 @@ public class home extends AppCompatActivity
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -259,7 +287,6 @@ public class home extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -344,7 +371,6 @@ public class home extends AppCompatActivity
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
-
     public void agrega_publicacion_mas(final RequestQueue req, final Context context){
         // Toast.makeText(this, "probando llegando", Toast.LENGTH_SHORT).show();
 
@@ -411,25 +437,7 @@ public class home extends AppCompatActivity
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
-    protected void displayNotification(){
-        Intent i = new Intent(this, home.class);
-        i.putExtra("notificationID", 1);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
-        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
-        CharSequence ticker ="Nueva entrada en SekthDroid";
-        CharSequence contentTitle = "SekthDroid";
-        CharSequence contentText = "Visita ahora SekthDroid!";
-        Notification noti = new NotificationCompat.Builder(this)
-                .setContentIntent(pendingIntent)
-                .setTicker(ticker)
-                .setContentTitle(contentTitle)
-                .setContentText(contentText)
-                .setSmallIcon(R.drawable.com_facebook_button_icon)
-                .addAction(R.drawable.com_facebook_button_icon, ticker, pendingIntent)
-                .setVibrate(new long[] {100, 250, 100, 500})
-                .build();
-        nm.notify(1, noti);
-    }
+
 }
