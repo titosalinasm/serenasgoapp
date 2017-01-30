@@ -111,7 +111,6 @@ public class home extends AppCompatActivity
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference publicacionRef = ref.child("publicacion");
     //.Base de datos Firebase
-
     //Temporizador
     private CountDownTimer countDownTimer;
     //.Temporizador
@@ -201,22 +200,22 @@ public class home extends AppCompatActivity
 
         TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
         spec.setContent(R.id.tab1);
-        spec.setIndicator("", res.getDrawable(R.mipmap.news3));
+        spec.setIndicator("", res.getDrawable(R.mipmap.news5));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab2");
         spec.setContent(R.id.tab2);
-        spec.setIndicator("", res.getDrawable(R.mipmap.maps3));
+        spec.setIndicator("", res.getDrawable(R.mipmap.map5));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab3");
         spec.setContent(R.id.tab3);
-        spec.setIndicator("", res.getDrawable(R.mipmap.category3));
+        spec.setIndicator("", res.getDrawable(R.mipmap.categoria5));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab4");
         spec.setContent(R.id.tab4);
-        spec.setIndicator("",res.getDrawable(R.mipmap.info3));
+        spec.setIndicator("",res.getDrawable(R.mipmap.info5));
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
