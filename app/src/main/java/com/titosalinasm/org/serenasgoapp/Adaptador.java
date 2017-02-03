@@ -25,7 +25,6 @@ public class Adaptador extends BaseAdapter{
     public Adaptador(ArrayList<TCardview> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
-
     }
 
     @Override
@@ -60,9 +59,9 @@ public class Adaptador extends BaseAdapter{
         TextView nombre=(TextView)convertView.findViewById(R.id.i_tv_nombre);
         TextView descripcion=(TextView)convertView.findViewById(R.id.i_tv_descripcion);
 
-
         final String des=arrayList.get(position).getDescripcion();
         LinearLayout liner_layaut=(LinearLayout)convertView.findViewById(R.id.liner_layaut);
+
         //asignando valores dinamicos
         liner_layaut.setOnClickListener(new View.OnClickListener() {
             @Override

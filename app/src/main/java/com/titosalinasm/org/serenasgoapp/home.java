@@ -223,13 +223,23 @@ public class home extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnTouchListener(new View.OnTouchListener() {
+        FloatingActionButton fab_sos = (FloatingActionButton) findViewById(R.id.fab_sos);
+         FloatingActionButton fab_tegoria = (FloatingActionButton) findViewById(R.id.fab_categoria);
+
+         fab_tegoria.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+                 categorias ct=new categorias();
+                 ct.show(manager, "Categorias");
+             }
+         });
+
+        fab_sos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
                 timesos d=new timesos();
-
                 int m=event.getAction();
                switch (m){
                    case MotionEvent.ACTION_DOWN:
