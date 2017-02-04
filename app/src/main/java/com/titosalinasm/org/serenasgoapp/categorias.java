@@ -41,7 +41,7 @@ import java.util.Map;
 public class categorias extends DialogFragment {
     public categorias() {
     }
-
+    AlertDialog alertcategoria=null;
     GridView gv_categoria;
     GridAdapter gridAdapter;
 
@@ -63,44 +63,6 @@ public class categorias extends DialogFragment {
 
         gv_categoria=(GridView) v.findViewById(R.id.gv_categoria);
 
-        /*
-        ArrayList<TGridView> modelcategoria=new ArrayList<>();
-        TGridView m=new TGridView();
-
-        m.setImgCategoria("http://d3j5y3w2fmfk8c.cloudfront.net/wp-content/uploads/drugs_law_in_prague.jpg?x31740");
-        m.setNombreCategoria("Mariguana");
-        m.setCodigo(1);
-        modelcategoria.add(m);
-
-        m=new TGridView();
-        m.setImgCategoria("https://thumbs.dreamstime.com/z/jeringuilla-de-la-droga-y-herona-cocinada-38227473.jpg");
-        m.setNombreCategoria("Tito hola");
-        m.setCodigo(2);
-        modelcategoria.add(m);
-
-        m=new TGridView();
-        m.setImgCategoria("https://thumbs.dreamstime.com/z/jeringuilla-de-la-droga-y-herona-cocinada-38227473.jpg");
-        m.setNombreCategoria("Tito hola");
-        m.setCodigo(3);
-        modelcategoria.add(m);
-
-        m=new TGridView();
-        m.setImgCategoria("https://thumbs.dreamstime.com/z/jeringuilla-de-la-droga-y-herona-cocinada-38227473.jpg");
-        m.setNombreCategoria("Tito hola");
-        m.setCodigo(4);
-        modelcategoria.add(m);
-
-        m=new TGridView();
-        m.setImgCategoria("https://thumbs.dreamstime.com/z/jeringuilla-de-la-droga-y-herona-cocinada-38227473.jpg");
-        m.setNombreCategoria("Tito hola");
-        m.setCodigo(5);
-        modelcategoria.add(m);
-
-        gridAdapter=new GridAdapter(modelcategoria, getActivity());
-        gv_categoria.setAdapter(gridAdapter);
-        */
-
-       // gv_categoria.setAdapter();
         gv_categoria.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,8 +72,8 @@ public class categorias extends DialogFragment {
         builder.setView(v);
 
         //tv_segundo = (TextView) v.findViewById(R.id.tv_segundo);
-
-        return builder.create();
+        alertcategoria=builder.create();
+        return alertcategoria;
     }
   public void recupera_categoria(final RequestQueue req, final Context context,final ProgressDialog progressDialog){
         // Toast.makeText(this, "probando llegando", Toast.LENGTH_SHORT).show();

@@ -11,15 +11,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentHostCallback;
 import android.support.v4.view.MotionEventCompat;
@@ -59,6 +65,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,10 +91,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import android.support.v4.app.DialogFragment;
 
 public class home extends AppCompatActivity
-        implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
+        implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, GoogleMap.OnMapClickListener, LocationListener {
     //Identificadores del home
     Button tvcodigo;
     ImageView fotoperfil;
@@ -91,12 +104,20 @@ public class home extends AppCompatActivity
     TextView tv_finpublic;
     //.Identificadores del home
 
+    //map
+    private GoogleMap mapa;
+    public int contador = 0;
+    public LocationManager locationManager;
+    public LocationListener locationListener;
+    AlertDialog alert = null;
+    //.map
+
     //Llamada Volley
     RequestQueue requestQueue;
     //.Llamada Volley
 
     //ArrayList para el Adaptador
-    ArrayList<TCardview>  model=new ArrayList<>();
+    ArrayList<TCardview> model = new ArrayList<>();
     //.ArrayList para el Adaptador
 
     //ListView Adaptador
@@ -115,38 +136,44 @@ public class home extends AppCompatActivity
     //.Base de datos Firebase
     //Temporizador
     private CountDownTimer countDownTimer;
+
     //.Temporizador
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-         //variables del archivo home.xml
-        tvcodigo=(Button) findViewById(R.id.tvcodigo);
-        tv_finpublic=(TextView)findViewById(R.id.tv_finpublic);
+        //variables del archivo home.xml
+        tvcodigo = (Button) findViewById(R.id.tvcodigo);
+        tv_finpublic = (TextView) findViewById(R.id.tv_finpublic);
         tv_finpublic.setVisibility(View.GONE);
-
+        //.variables del archivo home.xml
 
 
         //ImageView pro=(ImageView)header.findViewById(R.id.profile_image);
+        //recupera datos del otro activity
+        Bundle bundle = getIntent().getExtras();
+        String idusuario = bundle.getString("idusuario");
+        String usuario = bundle.getString("usuario");
+        String foto = bundle.getString("foto");
+        String nombres = bundle.getString("nombres");
+        String apellidos = bundle.getString("apellidos");
+        //.recupera datos del otro activity
 
-        Bundle bundle=getIntent().getExtras();
-        String idusuario=bundle.getString("idusuario");
-        String usuario=bundle.getString("usuario");
-        String foto=bundle.getString("foto");
-        String nombres=bundle.getString("nombres");
-        String apellidos=bundle.getString("apellidos");
-
+        //Captura conexion del servidor
         requestQueue = Volley.newRequestQueue(this);
-        recupera_ultimas_publicaciones(requestQueue,home.this);
-        lista=(ListView)findViewById(R.id.h_lv_modelo);
+        //Captura conexion del servidor
+
+        //recupera las ultimas publicaciones disponibles
+        recupera_ultimas_publicaciones(requestQueue, home.this);
+        lista = (ListView) findViewById(R.id.h_lv_modelo);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlContainer);
         swipeContainer.setOnRefreshListener(this);
         publicacionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(variablesGlobales.sucesofirebase>1) {
+                if (variablesGlobales.sucesofirebase > 1) {
                     /*
                     Iterator i = dataSnapshot.getChildren().iterator();
                     String titulo="";
@@ -156,12 +183,12 @@ public class home extends AppCompatActivity
                     */
                     swipeContainer.setRefreshing(true);
                     requestQueue = Volley.newRequestQueue(home.this);
-                    model=new ArrayList<>();
-                    variablesGlobales.codigo_layout=1;
-                    variablesGlobales.limite_inferior_publicacion=2;
+                    model = new ArrayList<>();
+                    variablesGlobales.codigo_layout = 1;
+                    variablesGlobales.limite_inferior_publicacion = 2;
                     recupera_ultimas_publicaciones(requestQueue, home.this);
 
-                }else{
+                } else {
                     variablesGlobales.sucesofirebase++;
                 }
             }
@@ -172,8 +199,9 @@ public class home extends AppCompatActivity
             }
         });
         lista.setOnScrollListener(new AbsListView.OnScrollListener() {
-            int cont=0;
+            int cont = 0;
             boolean userScrolled = false;
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -182,9 +210,10 @@ public class home extends AppCompatActivity
                 }
 
             }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (variablesGlobales.cantidadpublicaciones>variablesGlobales.limite_inferior_publicacion) {
+                if (variablesGlobales.cantidadpublicaciones > variablesGlobales.limite_inferior_publicacion) {
                     if (userScrolled
                             && firstVisibleItem + visibleItemCount == totalItemCount) {
                         userScrolled = false;
@@ -193,13 +222,75 @@ public class home extends AppCompatActivity
 
                         agrega_publicacion_mas(requestQueue, home.this);
                     }
-                }else {
+                } else {
                     swipeContainer.setRefreshing(false);
                     tv_finpublic.setVisibility(View.VISIBLE);
                 }
             }
         });
-        // tvcodigo.setText(imei);
+        //.recupera las ultimas publicaciones disponibles
+
+        //map
+
+        mapa = ((SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map)).getMap();
+        mapa.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mapa.setMyLocationEnabled(true);
+         mapa.getUiSettings().setZoomControlsEnabled(true);
+         mapa.getUiSettings().setCompassEnabled(true);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertNoGps();
+        }
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                contador++;
+
+                LatLng posicionxy = new LatLng(location.getLatitude(), location.getLongitude());
+                mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionxy, 16));
+                //mapa.addMarker(new MarkerOptions().position(posicionxy).title("Mi posición").snippet("Emergencias #5666233"));
+
+                Circle circle = mapa.addCircle(new CircleOptions()
+                        .center(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .radius(1).strokeColor(Color.BLUE));
+
+
+                // Toast.makeText(MapsActivity.this, "coordenadas " + contador+": ("+location.getLatitude()+", "+location.getLongitude()+")", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+         //.map
+
         //TAB
         Resources res = getResources();
         TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
@@ -226,7 +317,7 @@ public class home extends AppCompatActivity
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
-        //FIN TAB
+        //.TAB
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -254,8 +345,13 @@ public class home extends AppCompatActivity
                 int m=event.getAction();
                switch (m){
                    case MotionEvent.ACTION_DOWN:
-                       d.show(manager, "Timer Sos");
-                       d.comenzar();
+
+                       if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                           AlertNoGps();
+                       }else{
+                           d.show(manager, "Timer Sos");
+                           d.comenzar();
+                       }
                        break;
                    case MotionEvent.ACTION_UP:
                        d.cancelar();
@@ -457,6 +553,48 @@ public class home extends AppCompatActivity
         };
 // Add the request to the RequestQueue.
         req.add(stringRequest);
+    }
+    private void AlertNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("El sistema GPS esta desactivado, ¿Desea activarlo?")
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
     }
 
 

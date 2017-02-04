@@ -18,6 +18,7 @@ import java.util.Locale;
 public class timesos extends DialogFragment {
    static CountDownTimer countDownTimer;
     TextView tv_segundo;
+    public static AlertDialog alertsos=null;
     public timesos() {
     }
 
@@ -39,8 +40,9 @@ public class timesos extends DialogFragment {
         builder.setView(v);
 
         tv_segundo = (TextView) v.findViewById(R.id.tv_segundo);
+        alertsos=builder.create();
 
-        return builder.create();
+        return alertsos;
 
     }
 
@@ -62,6 +64,7 @@ public class timesos extends DialogFragment {
     }
     public void cancelar(){
         if(countDownTimer!=null){
+            alertsos.dismiss();
             countDownTimer.cancel();
             countDownTimer=null;
         }
