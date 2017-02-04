@@ -2,13 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "com.titosalinasm.org.serenasgoapp"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -21,22 +23,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs') //nodea todos los componentes de la lista como si fuera el DOM de HTML con javascript
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //nodea todos los componentes de la lista como si fuera el DOM de HTML con javascript
     testCompile 'junit:junit:4.12' //llama la libreria junix de linux
-    compile 'com.android.support:appcompat-v7:25.0.0'//añade los componentes de la clase appcompat
-    compile 'com.android.support:design:25.0.0' //añade los componentes de material design
-    //compile 'com.google.android.gms:play-services-auth:8.3.0' //añade los servicios de google
-    compile 'com.google.android.gms:play-services-auth:9.0.0'
-    compile 'com.mcxiaoke.volley:library-aar:1.0.0' //hace una conexion remota con el servidor
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)' //añade el SDK de facebook para el login
-    compile 'com.shamanland:fab:0.0.8' //nose que hace
-    compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.1' //compatibiliza algunos componentes en la Layout
-    compile 'com.squareup.picasso:picasso:2.5.0' //carga imagenes desde un servidor
-    compile 'com.github.bumptech.glide:glide:3.5.2' //añade el proyecto a Github
-    compile 'de.hdodenhof:circleimageview:2.1.0' //convierte en circular una imagen
-    compile 'com.android.support:support-v4:22.0.0' //actualiza un listview
 
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
+    compile 'com.google.android.gms:play-services-auth:9.0.0'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.shamanland:fab:0.0.8'
+    compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.firebase:firebase-core:9.0.1'
-    compile 'com.google.firebase:firebase-database:9.0.1' //real time
+    compile 'com.google.firebase:firebase-database:9.0.1'
+    compile 'com.google.android.gms:play-services-maps:9.0.0'
+
 }
 

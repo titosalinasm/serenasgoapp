@@ -47,7 +47,6 @@ public class Adaptador extends BaseAdapter{
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.card_view, parent, false);
-
         }
 
         //inicializando las variables dinamicas

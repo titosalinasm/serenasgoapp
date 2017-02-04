@@ -26,7 +26,6 @@ public class GridAdapter extends BaseAdapter {
             this.arrayList = arrayList;
             mContext=c;
         }
-
         @Override
         public int getCount() {
             return arrayList.size();

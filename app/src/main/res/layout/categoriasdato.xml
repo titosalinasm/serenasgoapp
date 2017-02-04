@@ -6,13 +6,16 @@
     android:gravity="center"
     >
     <ImageView
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/img_grid"
         />
     <TextView
-        android:layout_width="85dp"
+        android:layout_width="60dp"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
         android:id="@+id/tv_grid"
+        android:textSize="8dp"
+        android:textStyle="bold"
         />
 </LinearLayout>

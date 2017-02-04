@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -82,7 +84,7 @@ import android.support.v4.app.DialogFragment;
 public class home extends AppCompatActivity
         implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
     //Identificadores del home
-    TextView tvcodigo;
+    Button tvcodigo;
     ImageView fotoperfil;
     TextView tvnombresapellidos;
     TextView tvcorreoelectronico;
@@ -118,9 +120,14 @@ public class home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        tvcodigo=(TextView)findViewById(R.id.tvcodigo);
+
+         //variables del archivo home.xml
+        tvcodigo=(Button) findViewById(R.id.tvcodigo);
         tv_finpublic=(TextView)findViewById(R.id.tv_finpublic);
         tv_finpublic.setVisibility(View.GONE);
+
+
+
         //ImageView pro=(ImageView)header.findViewById(R.id.profile_image);
 
         Bundle bundle=getIntent().getExtras();
@@ -230,7 +237,11 @@ public class home extends AppCompatActivity
              @Override
              public void onClick(View v) {
                  android.support.v4.app.FragmentManager manager=getSupportFragmentManager();
+
                  categorias ct=new categorias();
+                 requestQueue = Volley.newRequestQueue(home.this);
+                 final ProgressDialog loading = ProgressDialog.show(home.this,"Cargando categorias...","Espere por favor...",false,false);
+                 ct.recupera_categoria(requestQueue, home.this, loading);
                  ct.show(manager, "Categorias");
              }
          });
@@ -324,6 +335,7 @@ public class home extends AppCompatActivity
     public void onRefresh() {
         swipeContainer.setRefreshing(false);
     }
+
     public void recupera_ultimas_publicaciones(final RequestQueue req, final Context context){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_ultimas_publicaciones.php",
@@ -446,7 +458,6 @@ public class home extends AppCompatActivity
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
-
 
 
 }

@@ -9,6 +9,7 @@ public class variablesGlobales {
     public static int limite_inferior_publicacion=2;
     public static int codigo_layout=1;
     public static String url_img_pub="http://serapphuaraz.com/administrador/imgpublicaciones/";
+    public static String url_img_categorias="http://serapphuaraz.com/administrador/imgcategoria/";
     public static int sucesofirebase=1;
 
     public static boolean estado_movil=false;
