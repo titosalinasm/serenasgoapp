@@ -29,7 +29,6 @@ import java.util.Set;
 public class chat_main extends AppCompatActivity {
     private Button add_room;
     private EditText room_name;
-
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of_rooms = new ArrayList<>();

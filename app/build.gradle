@@ -29,19 +29,19 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
-    compile 'com.google.android.gms:play-services-auth:9.0.0'
+    compile 'com.google.android.gms:play-services-auth:9.0.0'// login google
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'//facebook login
     compile 'com.shamanland:fab:0.0.8'
-    compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.1'
-    compile 'com.squareup.picasso:picasso:2.5.0'
-    compile 'com.github.bumptech.glide:glide:3.5.2'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.1'//compatibiliad
+    compile 'com.squareup.picasso:picasso:2.5.0'//Load img
+    compile 'com.github.bumptech.glide:glide:3.5.2'//Load img
+    compile 'de.hdodenhof:circleimageview:2.1.0'//imagen circular
     compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.firebase:firebase-core:9.0.1'
-    compile 'com.google.firebase:firebase-database:9.0.1'
-    compile 'com.google.android.gms:play-services-maps:9.0.0'
-
+    compile 'com.android.support:multidex:1.0.1'//funcion multi 64K
+    compile 'com.google.firebase:firebase-core:9.0.1'//bd no sql real time
+    compile 'com.google.firebase:firebase-database:9.0.1'//bd no sql real time
+    compile 'com.google.android.gms:play-services-maps:9.0.0'//google map
+    //compile 'com.google.android.gms:play-services-gcm:9.0.0' //notificacion google cloud message
 }
 

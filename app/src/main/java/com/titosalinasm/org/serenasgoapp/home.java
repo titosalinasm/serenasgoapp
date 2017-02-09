@@ -102,6 +102,7 @@ public class home extends AppCompatActivity
     TextView tvnombresapellidos;
     TextView tvcorreoelectronico;
     TextView tv_finpublic;
+    int cont=0;
     //.Identificadores del home
 
     //map
@@ -134,10 +135,6 @@ public class home extends AppCompatActivity
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference publicacionRef = ref.child("publicacion");
     //.Base de datos Firebase
-    //Temporizador
-    private CountDownTimer countDownTimer;
-
-    //.Temporizador
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,7 +150,7 @@ public class home extends AppCompatActivity
         //ImageView pro=(ImageView)header.findViewById(R.id.profile_image);
         //recupera datos del otro activity
         Bundle bundle = getIntent().getExtras();
-        String idusuario = bundle.getString("idusuario");
+        variablesGlobales.idusuario=bundle.getString("idusuario");
         String usuario = bundle.getString("usuario");
         String foto = bundle.getString("foto");
         String nombres = bundle.getString("nombres");
@@ -258,16 +255,17 @@ public class home extends AppCompatActivity
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                LatLng posicionxy = new LatLng(location.getLatitude(), location.getLongitude());
+                variablesGlobales.latitud=location.getLatitude()+"";
+                variablesGlobales.longitud=location.getLongitude()+"";
                 contador++;
 
-                LatLng posicionxy = new LatLng(location.getLatitude(), location.getLongitude());
                 mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionxy, 16));
                 //mapa.addMarker(new MarkerOptions().position(posicionxy).title("Mi posición").snippet("Emergencias #5666233"));
 
                 Circle circle = mapa.addCircle(new CircleOptions()
                         .center(new LatLng(location.getLatitude(), location.getLongitude()))
                         .radius(1).strokeColor(Color.BLUE));
-
 
                 // Toast.makeText(MapsActivity.this, "coordenadas " + contador+": ("+location.getLatitude()+", "+location.getLongitude()+")", Toast.LENGTH_LONG).show();
             }
@@ -298,22 +296,22 @@ public class home extends AppCompatActivity
 
         TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
         spec.setContent(R.id.tab1);
-        spec.setIndicator("", res.getDrawable(R.mipmap.news5));
+        spec.setIndicator("", res.getDrawable(R.mipmap.news6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab2");
         spec.setContent(R.id.tab2);
-        spec.setIndicator("", res.getDrawable(R.mipmap.map5));
+        spec.setIndicator("", res.getDrawable(R.mipmap.maps6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab3");
         spec.setContent(R.id.tab3);
-        spec.setIndicator("", res.getDrawable(R.mipmap.categoria5));
+        spec.setIndicator("", res.getDrawable(R.mipmap.messenger6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab4");
         spec.setContent(R.id.tab4);
-        spec.setIndicator("",res.getDrawable(R.mipmap.info5));
+        spec.setIndicator("",res.getDrawable(R.mipmap.info6));
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
@@ -345,16 +343,33 @@ public class home extends AppCompatActivity
                 int m=event.getAction();
                switch (m){
                    case MotionEvent.ACTION_DOWN:
-
                        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                            AlertNoGps();
                        }else{
-                           d.show(manager, "Timer Sos");
-                           d.comenzar();
+                               d.show(manager, "Timer Sos");
                        }
                        break;
                    case MotionEvent.ACTION_UP:
-                       d.cancelar();
+                       if (locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                           Log.d("titoup", ""+(timesos.tiempo_temp));
+                           if((timesos.tiempo_temp)!=0) {
+                               timesos.tiempo_temp=4;
+                               Toast.makeText(home.this,  "Para enviar un SOS mantenga presionado 3 seg.", Toast.LENGTH_SHORT).show();
+                               d.cancelar();
+                           }else{
+                               Log.d("Se completo", ""+(timesos.tiempo_temp));
+                           }
+                       }
+                       break;
+                   case MotionEvent.ACTION_CANCEL:
+                       if (alert!=null) {
+                           d.cancelar();
+                       }
+                       break;
+                   case MotionEvent.ACTION_BUTTON_RELEASE:
+                       if (alert!=null) {
+                           d.cancelar();
+                       }
                        break;
                    default:
                        return true;

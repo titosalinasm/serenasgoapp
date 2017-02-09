@@ -33,7 +33,6 @@ public class sesionMovilUser {
     private ListView lista;
     private Adaptador adapter;
     public void estado_sesion_movil(final Context context, final RequestQueue req, final String ime){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"estado_sesion_movil.php",
                 new Response.Listener<String>() {
                     @Override
@@ -42,9 +41,6 @@ public class sesionMovilUser {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
                             //verifica si el movil esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
-
-
-
                                // Log.d("nombretito",respuestaJSON.getJSONObject("usuariocompleto").getString("nombres") );
 
                                 Intent intent = new Intent(context, home.class);
