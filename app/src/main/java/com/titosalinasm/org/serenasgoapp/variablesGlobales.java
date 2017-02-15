@@ -19,6 +19,11 @@ public class variablesGlobales {
     public static String latitud;
     public static String longitud;
     //.Longitud y latitud
+
+    public static String idusuario_movil="";
+    public static String avatar_movil="";
+    public static String nombre_movil="";
+
     public static boolean estado_movil=false;
     public static boolean existencia_usuario=false;
     public static boolean ccrear_persona=false;

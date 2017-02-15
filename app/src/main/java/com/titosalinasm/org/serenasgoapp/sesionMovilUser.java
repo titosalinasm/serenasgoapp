@@ -49,6 +49,12 @@ public class sesionMovilUser {
                                 intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                 intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                 intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+
+                               variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
+                               variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
+                               variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                                              respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
+
                                  context.startActivity(intent);
                                 ((Activity)(context)).finish();
 
@@ -158,6 +164,11 @@ public class sesionMovilUser {
                                     intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                     intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                     intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+                                    variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
+                                    variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
+                                    variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                            respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
+
                                     context.startActivity(intent);
                                     ((Activity)(context)).finish();
                                     loading.dismiss();
@@ -268,6 +279,11 @@ public class sesionMovilUser {
                                 intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                 intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                 intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+
+                                variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
+                                variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
+                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                        respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
                                 context.startActivity(intent);
                                 ((Activity)(context)).finish();
                                 loading.dismiss();
@@ -323,6 +339,12 @@ public class sesionMovilUser {
                                 intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                 intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                 intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+
+                                variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
+                                variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
+                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                        respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
+
                                 context.startActivity(intent);
                                 ((Activity)(context)).finish();
                                 loading.dismiss();

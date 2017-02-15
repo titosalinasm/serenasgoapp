@@ -30,7 +30,6 @@ public class chat_room extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
         btn_send_msg = (Button) findViewById(R.id.btn_send);
         input_msg = (EditText) findViewById(R.id.msg_input);
-        chat_conversation = (TextView) findViewById(R.id.textView);
 
         user_name = getIntent().getExtras().get("user_name").toString();
         room_name = getIntent().getExtras().get("room_name").toString();
@@ -42,7 +41,6 @@ public class chat_room extends AppCompatActivity {
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Map<String,Object> map = new HashMap<String, Object>();
                 temp_key = root.push().getKey();
                 root.updateChildren(map);
@@ -91,14 +89,10 @@ public class chat_room extends AppCompatActivity {
     private String chat_msg,chat_user_name;
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
-
         Iterator i = dataSnapshot.getChildren().iterator();
-
         while (i.hasNext()){
-
             chat_msg = (String) ((DataSnapshot)i.next()).getValue();
             chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
-
             chat_conversation.append(chat_user_name +" : "+chat_msg +" \n");
         }
 

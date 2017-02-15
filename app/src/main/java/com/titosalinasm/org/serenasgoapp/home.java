@@ -97,12 +97,11 @@ import android.support.v4.app.DialogFragment;
 public class home extends AppCompatActivity
         implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, GoogleMap.OnMapClickListener, LocationListener {
     //Identificadores del home
-    Button tvcodigo;
     ImageView fotoperfil;
     TextView tvnombresapellidos;
     TextView tvcorreoelectronico;
     TextView tv_finpublic;
-    int cont=0;
+    Button tv_chatprueba;
     //.Identificadores del home
 
     //map
@@ -112,7 +111,6 @@ public class home extends AppCompatActivity
     public LocationListener locationListener;
     AlertDialog alert = null;
     //.map
-
     //Llamada Volley
     RequestQueue requestQueue;
     //.Llamada Volley
@@ -134,16 +132,23 @@ public class home extends AppCompatActivity
     //Base de datos Firebase
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference publicacionRef = ref.child("publicacion");
+    DatabaseReference sosRef = ref.child("sos");
     //.Base de datos Firebase
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         //variables del archivo home.xml
-        tvcodigo = (Button) findViewById(R.id.tvcodigo);
+        tv_chatprueba = (Button) findViewById(R.id.tv_chatprueba);
         tv_finpublic = (TextView) findViewById(R.id.tv_finpublic);
         tv_finpublic.setVisibility(View.GONE);
+        tv_chatprueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             Intent i=new Intent(home.this, chat.class);
+                startActivity(i);
+            }
+        });
         //.variables del archivo home.xml
 
 
