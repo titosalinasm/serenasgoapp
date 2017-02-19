@@ -3,6 +3,7 @@ package com.titosalinasm.org.serenasgoapp;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
@@ -66,7 +67,7 @@ public class categorias extends DialogFragment {
         gv_categoria.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
+
             }
         });
         builder.setView(v);
@@ -77,7 +78,6 @@ public class categorias extends DialogFragment {
     }
   public void recupera_categoria(final RequestQueue req, final Context context,final ProgressDialog progressDialog){
         // Toast.makeText(this, "probando llegando", Toast.LENGTH_SHORT).show();
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_categoria.php",
                 new Response.Listener<String>() {
                     @Override

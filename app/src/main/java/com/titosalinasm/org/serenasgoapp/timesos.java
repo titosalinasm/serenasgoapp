@@ -117,7 +117,6 @@ public class timesos extends DialogFragment {
                     public void onResponse(String response) {
                         try {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
-                            //verifica si el usuario google esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
                                 add_sos_firebase(respuestaJSON.getJSONObject("misos").getInt("idsos"),
                                         respuestaJSON.getJSONObject("misos").getString("lat"),

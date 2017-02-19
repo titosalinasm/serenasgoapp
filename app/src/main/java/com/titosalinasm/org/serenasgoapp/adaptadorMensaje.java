@@ -29,6 +29,7 @@ public class adaptadorMensaje extends BaseAdapter {
         this.arrayList = arrayList;
         this.context = context;
     }
+
     @Override
     public int getCount() {
         return arrayList.size();

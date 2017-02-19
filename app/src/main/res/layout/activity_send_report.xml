@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_send_report"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.titosalinasm.org.serenasgoapp.send_report"
+    android:orientation="vertical"
+    android:background="#BDBDBD"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/toolbar2">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/ivatraz"
+            android:src="@mipmap/ic_arrow_back_white_24dp"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_categoria_rep"
+                android:src="@mipmap/maps6"
+                android:layout_margin="10dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_toRightOf="@+id/iv_categoria_rep"
+                android:id="@+id/tv_categoria_rep"
+                android:text="DROGAS"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:paddingTop="15dp"
+                android:textColor="#ffffff"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:background="@color/colorBlanco"
+        android:paddingBottom="15dp"
+        android:elevation="4dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#303F9F"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:elevation="4dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:text="¿Tienes algo que reportar?"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="#BDBDBD"
+                android:text="- Toma una foto, describe lo que paso y envianoslo."
+                android:textSize="12dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/selectfoto1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:padding="30dp"
+                    android:id="@+id/iv_select_img"
+                    android:background="#C5CAE9"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_toRightOf="@+id/iv_select_img"
+                    android:id="@+id/tv_titulo_texto"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="top"
+                    android:text="¿Cuando sucedio?"
+                    android:paddingTop="15dp"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:elevation="4dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="datetime"
+                    android:id="@+id/et_fecha_hora"
+                    android:layout_toRightOf="@+id/calendario"
+                    android:layout_below="@+id/tv_titulo_texto"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:textSize="12dp"
+                    android:onClick="setDate"
+                    android:textStyle="bold"
+                    android:background="#C5CAE9"
+                    />
+
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/calendario"
+                    android:id="@+id/calendario"
+                    android:layout_alignTop="@+id/et_fecha_hora"
+                    android:layout_toRightOf="@+id/iv_select_img"
+                    android:layout_toEndOf="@+id/iv_select_img"
+                    android:layout_marginRight="5dp"
+                    />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="text|textMultiLine"
+            android:background="#C5CAE9"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:hint="Describe lo sucedido."
+            android:layout_marginTop="5dp"
+            android:gravity="top"
+            android:padding="5dp"
+            android:id="@+id/editText" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bingresar"
+            android:text="Enviar reporte"
+            android:elevation="4dp"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryLight" />
+    </LinearLayout>
+
+
+</LinearLayout>
