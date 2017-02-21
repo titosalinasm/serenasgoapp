@@ -60,7 +60,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="#303F9F"
+            android:background="@color/colorPrimaryDark"
             android:padding="20dp"
             android:orientation="vertical"
             android:elevation="4dp"
@@ -81,7 +81,29 @@
                 android:textSize="12dp"
                 />
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_categoria_rep_body"
+                android:src="@mipmap/maps6"
+                android:layout_margin="10dp"
+                />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@+id/iv_categoria_rep_body"
+                android:id="@+id/tv_categoria_rep_body"
+                android:text="DROGAS"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:paddingTop="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                />
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,15 +116,15 @@
                 >
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="115dp"
+                    android:layout_height="105dp"
                     android:src="@mipmap/selectfoto1"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:padding="30dp"
                     android:id="@+id/iv_select_img"
-                    android:background="#C5CAE9"
+                    android:background="@drawable/input_border"
                     />
 
                 <TextView
@@ -114,9 +136,9 @@
                     android:background="@color/colorPrimaryDark"
                     android:gravity="top"
                     android:text="¿Cuando sucedio?"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textColor="@color/colorPrimaryLight"
                     android:elevation="4dp"
                     />
@@ -130,10 +152,10 @@
                     android:layout_below="@+id/tv_titulo_texto"
                     android:layout_marginTop="5dp"
                     android:padding="10dp"
-                    android:textSize="12dp"
+                    android:textSize="10dp"
                     android:onClick="setDate"
                     android:textStyle="bold"
-                    android:background="#C5CAE9"
+                    android:background="@drawable/input_border"
                     />
 
                 <ImageView
@@ -155,28 +177,26 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:inputType="text|textMultiLine"
-            android:background="#C5CAE9"
+            android:background="@drawable/input_border"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:hint="Describe lo sucedido."
             android:layout_marginTop="5dp"
             android:gravity="top"
             android:padding="5dp"
-            android:id="@+id/editText" />
-
+            android:id="@+id/et_descripcion_reporte" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bingresar"
+            android:id="@+id/b_enviar_reporte"
             android:text="Enviar reporte"
             android:elevation="4dp"
             android:padding="@dimen/input_padding"
             android:layout_margin="@dimen/input_margin"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorPrimaryLight" />
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimaryLight"
+            />
     </LinearLayout>
-
-
 </LinearLayout>

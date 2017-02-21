@@ -58,7 +58,7 @@ public class GridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent i=new Intent(mContext, send_report.class);
-                    i.putExtra("idcategoria_rep", arrayList.get(position).getCodigo());
+                    i.putExtra("idcategoria_rep", arrayList.get(position).getCodigo()+"");
                     i.putExtra("url_img_report", arrayList.get(position).getImgCategoria());
                     i.putExtra("nombre_categoria", arrayList.get(position).getNombreCategoria());
                     mContext.startActivity(i);

@@ -102,6 +102,7 @@ public class home extends AppCompatActivity
     TextView tvcorreoelectronico;
     TextView tv_finpublic;
     Button tv_chatprueba;
+    TextView tv_ver_messemger;
     //.Identificadores del home
 
     //map
@@ -142,6 +143,17 @@ public class home extends AppCompatActivity
         tv_chatprueba = (Button) findViewById(R.id.tv_chatprueba);
         tv_finpublic = (TextView) findViewById(R.id.tv_finpublic);
         tv_finpublic.setVisibility(View.GONE);
+
+        tv_ver_messemger=(TextView)findViewById(R.id.tv_ver_messemger);
+        tv_ver_messemger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(home.this, chat.class);
+                startActivity(i);
+                tv_ver_messemger.setText("");
+            }
+        });
+
         tv_chatprueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

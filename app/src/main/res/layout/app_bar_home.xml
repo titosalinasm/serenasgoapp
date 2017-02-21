@@ -25,21 +25,32 @@
                 />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
-                android:src="@mipmap/notificacion"
+                android:src="@mipmap/messenger_new_sms"
                 android:foregroundGravity="right"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
                 />
+            <TextView
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:src="@mipmap/notificacion"
+                android:paddingTop="18dp"
+                android:text="1"
+                android:id="@+id/tv_ver_messemger"
+                android:textColor="#D32F2F"
+                android:textAlignment="center"
+                android:foregroundGravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home"
-        android:id="@+id/include" />
+    <include layout="@layout/content_home" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_sos"
@@ -53,10 +64,8 @@
         android:id="@+id/fab_categoria"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
+        android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@mipmap/categoria_float3"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|left" />
+        android:src="@mipmap/categoria_float3" />
 
 </android.support.design.widget.CoordinatorLayout>
