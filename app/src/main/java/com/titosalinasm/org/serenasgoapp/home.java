@@ -103,6 +103,8 @@ public class home extends AppCompatActivity
     TextView tv_finpublic;
     Button tv_chatprueba;
     TextView tv_ver_messemger;
+    int cuenta_msm_sin_read=0;
+    Parcelable state;
     //.Identificadores del home
 
     //map
@@ -135,6 +137,7 @@ public class home extends AppCompatActivity
     DatabaseReference publicacionRef = ref.child("publicacion");
     DatabaseReference sosRef = ref.child("sos");
     //.Base de datos Firebase
+    DatabaseReference refChat = ref.child("chats").child("user_"+variablesGlobales.idusuario_movil);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +153,6 @@ public class home extends AppCompatActivity
             public void onClick(View v) {
                 Intent i=new Intent(home.this, chat.class);
                 startActivity(i);
-                tv_ver_messemger.setText("");
             }
         });
 
@@ -162,7 +164,35 @@ public class home extends AppCompatActivity
             }
         });
         //.variables del archivo home.xml
+        refChat.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+               if(dataSnapshot.child("estado").getValue().toString().equals("1")){
+                   cuenta_msm_sin_read++;
+                   tv_ver_messemger.setText(""+cuenta_msm_sin_read);
+               }
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    tv_ver_messemger.setText("0");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         //ImageView pro=(ImageView)header.findViewById(R.id.profile_image);
         //recupera datos del otro activity
@@ -227,6 +257,7 @@ public class home extends AppCompatActivity
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
                 if (variablesGlobales.cantidadpublicaciones > variablesGlobales.limite_inferior_publicacion) {
                     if (userScrolled
                             && firstVisibleItem + visibleItemCount == totalItemCount) {
@@ -240,6 +271,7 @@ public class home extends AppCompatActivity
                     swipeContainer.setRefreshing(false);
                     tv_finpublic.setVisibility(View.VISIBLE);
                 }
+
             }
         });
         //.recupera las ultimas publicaciones disponibles
@@ -496,8 +528,9 @@ public class home extends AppCompatActivity
                                 adapter=new Adaptador(model, home.this);
                                 adapter.notifyDataSetChanged();
                                 lista=(ListView)findViewById(R.id.h_lv_modelo);
-
+                                state = lista.onSaveInstanceState();
                                 lista.setAdapter(adapter);
+                                lista.onRestoreInstanceState(state);
                                 swipeContainer.setRefreshing(false);
                                 //envia al activity principal
                             }
@@ -552,12 +585,12 @@ public class home extends AppCompatActivity
                                 }
 
                                 adapter=new Adaptador(model, home.this);
-                                adapter.notifyDataSetChanged();
                                 lista=(ListView)findViewById(R.id.h_lv_modelo);
-                                Log.d("errortitin", variablesGlobales.limite_inferior_publicacion+"");
-                                Parcelable state = lista.onSaveInstanceState();
-                                lista.setAdapter(adapter);
-                                lista.onRestoreInstanceState(state);
+                                //state = lista.onSaveInstanceState();
+                                //lista.setAdapter(adapter);
+                                //lista.onRestoreInstanceState(state);
+                                adapter.notifyDataSetChanged();
+                                lista.requestLayout();
                                 swipeContainer.setRefreshing(false);
 
                                 //envia al activity principal

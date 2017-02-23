@@ -1,6 +1,7 @@
 package com.titosalinasm.org.serenasgoapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +60,20 @@ public class Adaptador extends BaseAdapter{
         TextView descripcion=(TextView)convertView.findViewById(R.id.i_tv_descripcion);
 
         final String des=arrayList.get(position).getDescripcion();
-        LinearLayout liner_layaut=(LinearLayout)convertView.findViewById(R.id.liner_layaut);
+        final String tit=arrayList.get(position).getNombre();
+        final String fot=arrayList.get(position).getImagen();
+
+        ImageView iv_plus_not=(ImageView)convertView.findViewById(R.id.iv_plus_not);
 
         //asignando valores dinamicos
-        liner_layaut.setOnClickListener(new View.OnClickListener() {
+        iv_plus_not.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, des, Toast.LENGTH_LONG).show();
+                Intent i=new Intent(context, plus_noticia.class);
+                i.putExtra("titulo", tit);
+                i.putExtra("descripcion", des);
+                i.putExtra("img", fot);
+                context.startActivity(i);
             }
         });
 

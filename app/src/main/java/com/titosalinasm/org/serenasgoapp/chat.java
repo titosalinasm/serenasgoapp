@@ -53,7 +53,6 @@ public class chat extends AppCompatActivity {
             }
         });
 
-
         refChat.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -63,8 +62,11 @@ public class chat extends AppCompatActivity {
                 String nombre=dataSnapshot.child("nombre").getValue().toString();
 
                 String avatar=dataSnapshot.child("avatar").getValue().toString();
-
                 String mensaje=dataSnapshot.child("msg").getValue().toString();
+
+                if (dataSnapshot.child("estado").getValue().toString().equals("1")){
+                    refChat.child(dataSnapshot.getKey()).child("estado").setValue(0);
+                }
 
                 String fecha_hora=dataSnapshot.child("fecha_hora").getValue().toString();
 
@@ -129,6 +131,7 @@ public class chat extends AppCompatActivity {
                     map2.put("fecha_hora", fecha_our.toString());
                     map2.put("nombre_attend", "");
                     map2.put("avatar_attend", "");
+                    map2.put("estado", "0");
                     message_root.updateChildren(map2);
                     msg_input.setText("");
                 }

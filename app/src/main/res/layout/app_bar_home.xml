@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -33,19 +34,20 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 />
+
             <TextView
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:src="@mipmap/notificacion"
-                android:paddingTop="18dp"
-                android:text="1"
+                android:text="0"
                 android:id="@+id/tv_ver_messemger"
                 android:textColor="#D32F2F"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:foregroundGravity="right"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
+
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>

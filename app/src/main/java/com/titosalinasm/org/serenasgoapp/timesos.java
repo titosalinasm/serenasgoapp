@@ -1,18 +1,13 @@
 package com.titosalinasm.org.serenasgoapp;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,12 +21,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -85,23 +78,25 @@ public class timesos extends DialogFragment {
                 tv_segundo.setText(""+(tiempo_temp+1));
                 Log.d("titove", ""+(tiempo_temp+1));
             }
+
             @Override
             public void onFinish() {
                 progressBar.setVisibility(View.INVISIBLE);
                 tv_segundo.setTextSize(14);
                 tv_segundo.setText("Enviando SOS...");
-                envia_SOS(requestQueue);
+                //envia_SOS(requestQueue);
+                Log.d("error jessit", variablesGlobales.idusuario);
+                new SosAsyncTask(getContext()).execute("POST",""+variablesGlobales.idusuario,
+                        ""+variablesGlobales.latitud, ""+variablesGlobales.longitud);
                 //Log.d("Falta data", "Finalizo los 5 segundos");
             }
         };
         countDownTimer.start();
     }
-
     public void cancelar(){
         if(countDownTimer!=null){
-            if (alertsos!=null) {
+        if (alertsos!=null) {
                 alertsos.dismiss();
-
             }
             countDownTimer.cancel();
             countDownTimer=null;

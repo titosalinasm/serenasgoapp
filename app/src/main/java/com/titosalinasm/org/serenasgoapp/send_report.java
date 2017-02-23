@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -66,6 +67,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,6 +87,8 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
     EditText et_descripcion_reporte;
     static String idcategoria_rep;
     Button b_enviar_reporte;
+    LocationManager locationManager;
+    AlertDialog alert = null;
 
     /*camara galeria*/
     private AlertDialog _photoDialog;
@@ -108,12 +114,12 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
         iv_select_img=(ImageView)findViewById(R.id.iv_select_img);
         et_descripcion_reporte=(EditText)findViewById(R.id.et_descripcion_reporte);
         b_enviar_reporte=(Button)findViewById(R.id.b_enviar_reporte);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         Bundle bundle = getIntent().getExtras();
         String img_categoria=bundle.getString("url_img_report");
         String nombre_categoria=bundle.getString("nombre_categoria");
          idcategoria_rep=bundle.getString("idcategoria_rep");
-
 
         Glide.with(this).load(img_categoria).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_categoria_rep_body);
         Glide.with(this).load(img_categoria).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_categoria_rep);
@@ -147,8 +153,23 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
         b_enviar_reporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestQueue = Volley.newRequestQueue(send_report.this);
-                enviar_reporte_sucedido(requestQueue, getApplicationContext());
+                if (!locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    AlertNoGps();
+                }else{
+                    if (imagenBitmap != null) {
+                        if (et_descripcion_reporte.getText().toString().trim().length() > 0) {
+                            String imagen_draw = getStringImage(imagenBitmap);
+                            new ReportAsyncTask(send_report.this)
+                                    .execute("POST", variablesGlobales.idusuario_movil, idcategoria_rep, imagen_draw, et_fecha_hora.getText().toString(),
+                                            et_descripcion_reporte.getText().toString(), variablesGlobales.latitud, variablesGlobales.longitud);
+                        } else {
+                            Toast.makeText(send_report.this, "Su descripcion de lo sucedido esta vacio.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(send_report.this, "Debe crear o seleccionar una imagen.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
             }
         });
 
@@ -157,7 +178,6 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
     public void setDate(View view) {
         showDialog(999);
     }
-
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 999) {
@@ -315,7 +335,6 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
     //.camara galeria
     Bitmap thumb;
     public String getStringImage(Bitmap bmp){
-
         thumb=bmp;
         int ancho=bmp.getWidth();
         int alto=bmp.getHeight();
@@ -328,90 +347,29 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
             alto=thumb.getHeight();
             Log.d("abel", ancho+"x"+alto+"");
         }
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         thumb.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
-
     }
-
-    public void enviar_reporte_sucedido(final RequestQueue req, final Context context){
-        final ProgressDialog loading = ProgressDialog.show(send_report.this,"Enviando...","Espere por favor...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"apirest.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject respuestaJSON = new JSONObject(response.toString());
-                            if (respuestaJSON.getString("estado").equals("1")){
-                                loading.dismiss();
-                                Toast.makeText(send_report.this, "Se envio reporte con exito!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                loading.dismiss();
-                                Toast.makeText(send_report.this, "Otra cosa pero llego", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
+    private void AlertNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("El sistema GPS esta desactivado, Para el correcto funcionamiento debe activarlo.")
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                NetworkResponse networkResponse = error.networkResponse;
-                String errorMessage = "Unknown error";
-                if (networkResponse == null) {
-                    if (error.getClass().equals(TimeoutError.class)) {
-                        errorMessage = "Request timeout";
-                    } else if (error.getClass().equals(NoConnectionError.class)) {
-                        errorMessage = "Failed to connect server";
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
                     }
-                } else {
-                    String result = new String(networkResponse.data);
-                    try {
-                        JSONObject response = new JSONObject(result);
-                        String status = response.getString("status");
-                        String message = response.getString("message");
-
-                        Log.e("Error Status", status);
-                        Log.e("Error Message", message);
-
-                        if (networkResponse.statusCode == 404) {
-                            errorMessage = "Resource not found";
-                        } else if (networkResponse.statusCode == 401) {
-                            errorMessage = message+" Please login again";
-                        } else if (networkResponse.statusCode == 400) {
-                            errorMessage = message+ " Check your inputs";
-                        } else if (networkResponse.statusCode == 500) {
-                            errorMessage = message+" Something is getting wrong";
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Log.i("Error", errorMessage);
-                error.printStackTrace();
-
-                loading.dismiss();
-                Toast.makeText(context, "Algo salio mal :(. Por favor intentalo otra en unos minutos."+error, Toast.LENGTH_LONG).show();
-            }
-        }){
-            protected Map<String, String> getParams() throws AuthFailureError {
-                String image=getStringImage(imagenBitmap);
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("idusuario", variablesGlobales.idusuario_movil);
-                params.put("idcategoria_reporte", idcategoria_rep);
-                params.put("imagen", image);
-                params.put("fecha_hora_event", et_fecha_hora.getText().toString());
-                params.put("descripcion", et_descripcion_reporte.getText().toString());
-                params.put("latitud", variablesGlobales.latitud);
-                params.put("longitud", variablesGlobales.longitud);
-                return params;
-            }
-        };
-// Add the request to the RequestQueue.
-        req.add(stringRequest);
+                });
+        alert = builder.create();
+        alert.show();
     }
 
 

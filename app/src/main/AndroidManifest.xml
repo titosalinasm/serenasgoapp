@@ -62,7 +62,8 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".chat" />
-        <activity android:name=".send_report"></activity>
+        <activity android:name=".send_report" />
+        <activity android:name=".plus_noticia"></activity>
     </application>
 
 </manifest>
