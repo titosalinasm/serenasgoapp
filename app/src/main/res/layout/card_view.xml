@@ -3,9 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="5dp"
     >
-
 <LinearLayout
     android:id="@+id/liner_layaut"
     android:orientation="vertical"
@@ -24,30 +22,30 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
         android:id="@+id/iv_plus_not"
         />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             >
                 <TextView
                     android:id="@+id/i_tv_nombre"
-                    android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold|italic"
+                    android:text="Hola soy el titulo"
                     />
                 <TextView
                     android:id="@+id/i_tv_descripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/i_tv_nombre"/>
+                    android:layout_below="@+id/i_tv_nombre"
+                    android:text="Hola soy la descripcion"
+                    />
 
         </RelativeLayout>
 
@@ -55,7 +53,9 @@
     <ImageView
             android:id="@+id/iv_imagen"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+        android:src="@mipmap/calendario"
+        />
     <View android:background="#BDBDBD"
         android:id="@+id/lineaHorizontal"
         android:layout_height="0.5dp"
@@ -75,6 +75,7 @@
             android:layout_height="40dp"
             android:id="@+id/avatar_logo"
             android:layout_alignParentLeft="true"
+            android:src="@mipmap/maps6"
             />
 
         <TextView
@@ -86,6 +87,7 @@
             android:textColor="#000000"
             android:textStyle="bold"
             android:layout_marginTop="7dp"
+            android:text="nombre de susuario"
             />
         <TextView
             android:id="@+id/hora_fecha"
@@ -95,6 +97,7 @@
             android:layout_below="@+id/nombre_entidad"
             android:layout_toRightOf="@+id/avatar_logo"
             android:layout_marginLeft="5dp"
+            android:text="FEcha hora"
             />
     </RelativeLayout>
 

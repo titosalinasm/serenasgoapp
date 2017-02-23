@@ -1,7 +1,12 @@
 package com.titosalinasm.org.serenasgoapp;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +60,13 @@ public class Adaptador extends BaseAdapter{
         ImageView iv_imagen=(ImageView)convertView.findViewById(R.id.iv_imagen);
         ImageView avatar_logo=(ImageView)convertView.findViewById(R.id.avatar_logo);
         TextView nombre_entidad=(TextView)convertView.findViewById(R.id.nombre_entidad);
-        TextView hora_fecha=(TextView)convertView.findViewById(R.id.hora_fecha);
+        final TextView hora_fecha=(TextView)convertView.findViewById(R.id.hora_fecha);
         TextView nombre=(TextView)convertView.findViewById(R.id.i_tv_nombre);
         TextView descripcion=(TextView)convertView.findViewById(R.id.i_tv_descripcion);
+
+        final String entit=arrayList.get(position).getNombre_entidad();
+        final String av=arrayList.get(position).getFotoperfil();
+        final String fh=arrayList.get(position).getHora_fech();
 
         final String des=arrayList.get(position).getDescripcion();
         final String tit=arrayList.get(position).getNombre();
@@ -69,11 +78,17 @@ public class Adaptador extends BaseAdapter{
         iv_plus_not.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(context, plus_noticia.class);
-                i.putExtra("titulo", tit);
-                i.putExtra("descripcion", des);
-                i.putExtra("img", fot);
-                context.startActivity(i);
+                Intent intent=new Intent(context, plus_noticia.class);
+
+                intent.putExtra("avatar", av);
+                intent.putExtra("entidad", entit);
+                intent.putExtra("fecha_h", fh);
+
+                intent.putExtra("titulo", tit);
+                intent.putExtra("descripcion", des);
+                intent.putExtra("img", fot);
+
+                context.startActivity(intent);
             }
         });
 

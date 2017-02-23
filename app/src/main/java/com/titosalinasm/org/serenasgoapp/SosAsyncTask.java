@@ -1,10 +1,15 @@
 package com.titosalinasm.org.serenasgoapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.http.client.ClientProtocolException;
@@ -19,11 +24,15 @@ import java.io.IOException;
 
 public class SosAsyncTask  extends AsyncTask<String, Void, String>{
     private Context context;
+    AlertDialog alertDialog;
+    Activity activity;
 
-    public SosAsyncTask(Context context) {
+    public SosAsyncTask(Context context, final AlertDialog alertDialog, Activity activity) {
+
         this.context = context;
+        this.alertDialog=alertDialog;
+        this.activity=activity;
     }
-
     @Override
     protected String doInBackground(String... params) {
 
@@ -50,7 +59,8 @@ public class SosAsyncTask  extends AsyncTask<String, Void, String>{
 
     @Override
     protected void onPostExecute(String s) {
-
+        alertDialog.dismiss();
+        crea_mensaje_sos().show();
         try {
             JSONObject respuestaJSON = new JSONObject(s.toString());
             timesos tsos = new timesos();
@@ -70,6 +80,14 @@ public class SosAsyncTask  extends AsyncTask<String, Void, String>{
         }catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
+
+    public AlertDialog crea_mensaje_sos() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View v = inflater.inflate(R.layout.mensaje_sos, null);
+        builder.setView(v);
+        return builder.create();
+    }
+
 }
