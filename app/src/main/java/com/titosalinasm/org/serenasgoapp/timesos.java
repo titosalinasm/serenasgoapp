@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,7 +42,6 @@ public class timesos extends DialogFragment {
     public static AlertDialog alertsos=null;
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference sosRef = ref.child("sos");
-
     public timesos() {
 
     }
@@ -83,10 +85,10 @@ public class timesos extends DialogFragment {
             public void onFinish() {
                 progressBar.setVisibility(View.INVISIBLE);
                 tv_segundo.setTextSize(14);
-                tv_segundo.setText("Enviando SOS...");
+                tv_segundo.setText("ENVIANDO SOS...");
                 //envia_SOS(requestQueue);
-                Log.d("error jessit", variablesGlobales.idusuario);
-                new SosAsyncTask(getContext()).execute("POST",""+variablesGlobales.idusuario,
+                //Log.d("error jessit", variablesGlobales.idusuario);
+                new SosAsyncTask(getContext(), alertsos, getActivity()).execute("POST",""+variablesGlobales.idusuario,
                         ""+variablesGlobales.latitud, ""+variablesGlobales.longitud);
                 //Log.d("Falta data", "Finalizo los 5 segundos");
             }
@@ -102,54 +104,6 @@ public class timesos extends DialogFragment {
             countDownTimer=null;
         }
         tiempo_temp=4;
-    }
-
-    public void envia_SOS(final RequestQueue req){
-        // Toast.makeText(this, "probando llegando", Toast.LENGTH_SHORT).show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"in_sos.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject respuestaJSON = new JSONObject(response.toString());
-                            if (respuestaJSON.getString("estado").equals("1")){
-                                add_sos_firebase(respuestaJSON.getJSONObject("misos").getInt("idsos"),
-                                        respuestaJSON.getJSONObject("misos").getString("lat"),
-                                        respuestaJSON.getJSONObject("misos").getString("long"),
-                                        respuestaJSON.getJSONObject("misos").getString("fecha_hora_sos"),
-                                        respuestaJSON.getJSONObject("misos").getInt("idusuario_send_sos"),
-                                        respuestaJSON.getJSONObject("misos").getInt("idusuario_attend_sos"),
-                                        respuestaJSON.getJSONObject("misos").getString("estado") ,
-                                        respuestaJSON.getJSONObject("misos").getString("condicion"),
-                                        respuestaJSON.getJSONObject("misos").getString("detalle_sos"),
-                                        respuestaJSON.getJSONObject("misos").getString("nombres")+" "+
-                                        respuestaJSON.getJSONObject("misos").getString("apellidos"),
-                                        respuestaJSON.getJSONObject("misos").getString("avatar")
-                                        );
-
-                            tv_segundo.setText("Sos enviado");
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "No se pudo establecer conexión con el servidor. Revisa tu conexión a internet e intenta conectarte: "+error, Toast.LENGTH_LONG).show();
-            }
-        }){
-            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("idusuariox", variablesGlobales.idusuario);
-                params.put("latitudx", variablesGlobales.latitud);
-                params.put("longitudx", variablesGlobales.longitud);
-                return params;
-            }
-        };
-// Add the request to the RequestQueue.
-        req.add(stringRequest);
     }
 
     public void add_sos_firebase(int idsos, String latitud, String longitud, String fecha_hora_sos, int idusuario_send_sos, int idusuario_attend_sos,
