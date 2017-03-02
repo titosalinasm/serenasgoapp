@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    >
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="* nombre_entidad"
+    android:id="@+id/tv_list_nombre_entidad"
+    android:textStyle="bold"
+        android:textSize="16dp"
+    />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="* +51930570384"
+            android:textStyle="bold"
+            android:id="@+id/tv_list_numero_entidad"
+            android:paddingTop="15dp"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/call"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/tv_list_numero_entidad"
+            android:layout_toEndOf="@+id/tv_list_numero_entidad"
+            android:id="@+id/ib_list_call" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="nombre_entidad"
+        android:id="@+id/tv_list_direccion"
+        android:textStyle="bold"
+        />
+</LinearLayout>
+</LinearLayout>

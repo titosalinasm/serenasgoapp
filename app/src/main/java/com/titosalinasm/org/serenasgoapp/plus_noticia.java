@@ -21,9 +21,7 @@ public class plus_noticia extends AppCompatActivity {
         TextView i_tv_nombre=(TextView)findViewById(R.id.i_tv_nombre);
         TextView i_tv_descripcion=(TextView)findViewById(R.id.i_tv_descripcion);
         ImageView iv_imagen=(ImageView)findViewById(R.id.iv_imagen);
-
         Bundle bundle = getIntent().getExtras();
-
         String avata=bundle.getString("avatar");
         String nombr_ent=bundle.getString("entidad");
         String fech=bundle.getString("fecha_h");

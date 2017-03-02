@@ -78,17 +78,56 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
-
-                    <TextView android:id="@+id/textView3"
-                        android:text="Contenido Tab 2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Button
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Abrir chat de prueba"
-                        android:id="@+id/tv_chatprueba" />
+                        android:orientation="vertical"
+                        android:layout_margin="20dp"
+                        android:background="@color/colorBlanco"
+                        android:paddingBottom="15dp"
+                        android:elevation="4dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:padding="20dp"
+                            android:orientation="vertical"
+                            android:elevation="4dp"
+                            >
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#FFFFFF"
+                                android:text="¿Necesitas hablar con nosotros?"
+                                android:textSize="16dp"
+                                android:textAlignment="center"
+                                />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textColor="#BDBDBD"
+                                android:text="- Presiona el boton de abajo y escribenos."
+                                android:textSize="12dp"
+                                />
+                        </LinearLayout>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CHAT SERAPP HUARAZ"
+                            android:layout_gravity="center"
+                            android:padding="10dp"
+                            android:id="@+id/tv_chatprueba"
+                            android:elevation="4dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/colorAccent"
+                            android:textColor="@color/colorBlanco"
+                            />
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/tab4"
@@ -96,12 +135,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-
-                    <Button
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="New rergegre"
-                        android:id="@+id/tvcodigoe" />
+                        android:orientation="vertical"
+                        android:layout_margin="20dp"
+                        android:background="@color/colorBlanco"
+                        android:paddingBottom="15dp"
+                        android:elevation="4dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:padding="20dp"
+                            android:orientation="vertical"
+                            android:elevation="4dp"
+                            >
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#FFFFFF"
+                                android:text="Numeros de emergencia"
+                                android:textSize="16dp"
+                                android:textAlignment="center"
+                                />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textColor="#BDBDBD"
+                                android:text="- Presiona el boton de abajo y escribenos."
+                                android:textSize="12dp"
+                                />
+                        </LinearLayout>
+
+                        <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lv_info_emergencia"
+                            >
+
+                        </ListView>
+
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </FrameLayout>

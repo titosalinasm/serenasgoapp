@@ -19,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
@@ -79,6 +80,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import org.json.JSONArray;
@@ -86,6 +90,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Comment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -94,6 +99,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.support.v4.app.DialogFragment;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 
 public class home extends AppCompatActivity
         implements OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, GoogleMap.OnMapClickListener, LocationListener {
@@ -104,7 +113,7 @@ public class home extends AppCompatActivity
     TextView tv_finpublic;
     Button tv_chatprueba;
     TextView tv_ver_messemger;
-    int cuenta_msm_sin_read=0;
+    int cuenta_msm_sin_read = 0;
     Parcelable state;
     //.Identificadores del home
 
@@ -118,14 +127,16 @@ public class home extends AppCompatActivity
     //Llamada Volley
     RequestQueue requestQueue;
     //.Llamada Volley
-
     //ArrayList para el Adaptador
     ArrayList<TCardview> model = new ArrayList<>();
+    ArrayList<TEmergenciaView> modeloEmergencias = new ArrayList<>();
     //.ArrayList para el Adaptador
 
     //ListView Adaptador
     private ListView lista;
     private Adaptador adapter;
+    private adaptadorEmergencias adaptador_emergencias;
+    private ListView listaEmergencia;
     //ListView Adaptador
 
     //Refresh tipo facebook
@@ -138,14 +149,21 @@ public class home extends AppCompatActivity
     DatabaseReference publicacionRef = ref.child("publicacion");
     DatabaseReference sosRef = ref.child("sos");
     //.Base de datos Firebase
-    DatabaseReference refChat = ref.child("chats").child("user_"+variablesGlobales.idusuario_movil);
+    DatabaseReference refChat = ref.child("chats").child("user_" + variablesGlobales.idusuario_movil);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic("test");
+        FirebaseInstanceId.getInstance().getToken();
+        //.firebase messaje event
         //variables del archivo home.xml
         tv_chatprueba = (Button) findViewById(R.id.tv_chatprueba);
         tv_finpublic = (TextView) findViewById(R.id.tv_finpublic);
+
         tv_finpublic.setVisibility(View.GONE);
 
         tv_ver_messemger=(TextView)findViewById(R.id.tv_ver_messemger);
@@ -212,6 +230,7 @@ public class home extends AppCompatActivity
         //recupera las ultimas publicaciones disponibles
         recupera_ultimas_publicaciones(requestQueue, home.this);
         lista = (ListView) findViewById(R.id.h_lv_modelo);
+        listaEmergencia=(ListView)findViewById(R.id.lv_info_emergencia);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlContainer);
         swipeContainer.setOnRefreshListener(this);
         publicacionRef.addValueEventListener(new ValueEventListener() {
@@ -445,6 +464,7 @@ public class home extends AppCompatActivity
         tvnombresapellidos.setText(nombres+" "+apellidos);
         tvcorreoelectronico.setText(usuario);
         navigationView.setNavigationItemSelectedListener(null);
+        recupera_info_emergencia(requestQueue, this);
     }
 
 
@@ -662,5 +682,48 @@ public class home extends AppCompatActivity
     public void onMapClick(LatLng latLng) {
 
     }
+    public void recupera_info_emergencia(final RequestQueue req, final Context context){
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"list_numero_emergencia.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            if (respuestaJSON.getString("estado").equals("1")){
+
+                                JSONArray resultadopublicaciones = respuestaJSON.getJSONArray("info_emergencia");
+                                for(int i=0; i<resultadopublicaciones.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadopublicaciones.get(i);
+                                    TEmergenciaView m=new TEmergenciaView();
+                                    m.setNombre_entidad(resultadoItem.getString("nombre_entidad"));
+                                    m.setNumero(resultadoItem.getString("numero"));
+                                    m.setDireccion(resultadoItem.getString("direccion"));
+                                    modeloEmergencias.add(m);
+                                                          }
+
+                                adaptador_emergencias=new adaptadorEmergencias(modeloEmergencias, home.this);
+                                listaEmergencia=(ListView)findViewById(R.id.lv_info_emergencia);
+                                listaEmergencia.setAdapter(adaptador_emergencias);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // loading.dismiss();
+                //Toast.makeText(context, "No se pudo establecer conexión con el servidor. Revisa tu conexión a internet e intenta conectarte: "+error, Toast.LENGTH_LONG).show();
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
 }
