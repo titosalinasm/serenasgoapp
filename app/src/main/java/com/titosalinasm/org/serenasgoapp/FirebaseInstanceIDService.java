@@ -40,7 +40,6 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                 .url(variablesGlobales.paginaweb+"token_register.php")
                 .post(body)
                 .build();
-
         try {
             client.newCall(request).execute();
         } catch (IOException e) {
