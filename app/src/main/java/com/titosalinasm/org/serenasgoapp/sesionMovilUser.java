@@ -43,6 +43,8 @@ public class sesionMovilUser {
                             if (respuestaJSON.getString("estado").equals("1")){
                                // Log.d("nombretito",respuestaJSON.getJSONObject("usuariocompleto").getString("nombres") );
 
+                                actualizar_estado_sesion(req,"1",respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario"));
+
                                 Intent intent = new Intent(context, home.class);
                                 intent.putExtra("usuario",respuestaJSON.getJSONObject("usuariocompleto").getString("nombre_usuario"));
                                 intent.putExtra("idusuario", respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") );
@@ -124,11 +126,12 @@ public class sesionMovilUser {
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
-    public void crear_nuevo_usuario_correo(RequestQueue req, final String usu, String clave, String nombres, final String apellidos, String genero,
+    public void crear_nuevo_usuario_correo(RequestQueue req, final String usu, String clave, String nombres,
+                                           final String apellidos, String genero,
                                            String direccion, String telefono, String fabricante, String version_so,
-                                           String modelo, String marca, final String imei, String codigo_confirmacion, final String social, final String avatar, final Context context, final ProgressDialog loading){
-
-
+                                           String modelo, String marca, final String imei, String codigo_confirmacion,
+                                           final String social, final String avatar, final Context context,
+                                           final ProgressDialog loading){
         final RequestQueue req1=req;
         //datos de persona
         final String fnombres=nombres;
@@ -166,7 +169,7 @@ public class sesionMovilUser {
                                     intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
                                     variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
                                     variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
-                                    variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                    variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
                                             respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
 
                                     context.startActivity(intent);
@@ -176,8 +179,6 @@ public class sesionMovilUser {
 
                                     Toast.makeText(context,"No se pudo registrar el usuario. Intentelo otra vez." ,Toast.LENGTH_LONG).show();
                                 }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -259,9 +260,13 @@ public class sesionMovilUser {
 // Add the request to the RequestQueue.
         req.add(stringRequest);
     }
-    public void google_id_tjsegurity( final RequestQueue req, final String idgoogle,final String clave,final String nombres, final String apellidos,final String genero,
-                                      final String direccion,final String telefono,final String fabricante, final String version_so,
-                                      final String modelo, final String marca, final String imei, final String codigo_confirmacion,final String social, final ProgressDialog loading, final String avatar, final Context context){
+    public void google_id_tjsegurity( final RequestQueue req, final String idgoogle,
+                                      final String clave,final String nombres, final String apellidos,final String genero,
+                                      final String direccion,final String telefono,final String fabricante,
+                                      final String version_so,
+                                      final String modelo, final String marca, final String imei,
+                                      final String codigo_confirmacion,final String social,
+                                      final ProgressDialog loading, final String avatar, final Context context){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"id_google.php",
                 new Response.Listener<String>() {
@@ -271,18 +276,19 @@ public class sesionMovilUser {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
                             //verifica si el usuario google esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
-
                                 //envia al activity principal
+
+                                actualizar_estado_sesion(req,"1",respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario"));
+
                                 Intent intent = new Intent(context, home.class);
                                 intent.putExtra("usuario",respuestaJSON.getJSONObject("usuariocompleto").getString("nombre_usuario"));
                                 intent.putExtra("idusuario", respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") );
                                 intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                 intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                 intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
-
                                 variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
                                 variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
-                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
                                         respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
                                 context.startActivity(intent);
                                 ((Activity)(context)).finish();
@@ -332,7 +338,8 @@ public class sesionMovilUser {
                             //verifica si el usuario google esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
 
-                                //envia al activity principal
+                                actualizar_estado_sesion(req,"1",respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario"));
+
                                 Intent intent = new Intent(context, home.class);
                                 intent.putExtra("usuario",respuestaJSON.getJSONObject("usuariocompleto").getString("nombre_usuario"));
                                 intent.putExtra("idusuario", respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") );
@@ -342,8 +349,8 @@ public class sesionMovilUser {
 
                                 variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
                                 variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
-                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
-                                        respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
+                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
+                                respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
 
                                 context.startActivity(intent);
                                 ((Activity)(context)).finish();
@@ -377,7 +384,38 @@ public class sesionMovilUser {
         req.add(stringRequest);
     }
 
-
+    public void actualizar_estado_sesion(final RequestQueue req, final String valor, final String idusuario){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"update_estado_user.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            //verifica si el usuario google esta registrado
+                            if (respuestaJSON.getString("estado").equals("1")){
+                                Log.d("Acceso", "Se actualizo estado");
+                            }else{
+                                Log.d("Acceso", "Algo salio mal al actualizar");
+                                }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                         }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("valor", valor);
+                params.put("idusuario", idusuario);
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static boolean validateEmail(String email) {
         // Compiles the given regular expression into a pattern.

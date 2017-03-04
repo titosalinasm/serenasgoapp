@@ -110,7 +110,6 @@ public class home extends AppCompatActivity
     ImageView fotoperfil;
     TextView tvnombresapellidos;
     TextView tvcorreoelectronico;
-    TextView tv_finpublic;
     Button tv_chatprueba;
     TextView tv_ver_messemger;
     int cuenta_msm_sin_read = 0;
@@ -155,16 +154,13 @@ public class home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         FirebaseInstanceId.getInstance().getToken();
         //.firebase messaje event
         //variables del archivo home.xml
         tv_chatprueba = (Button) findViewById(R.id.tv_chatprueba);
-        tv_finpublic = (TextView) findViewById(R.id.tv_finpublic);
 
-        tv_finpublic.setVisibility(View.GONE);
+
 
         tv_ver_messemger=(TextView)findViewById(R.id.tv_ver_messemger);
         tv_ver_messemger.setOnClickListener(new View.OnClickListener() {
@@ -289,7 +285,7 @@ public class home extends AppCompatActivity
                     }
                 } else {
                     swipeContainer.setRefreshing(false);
-                    tv_finpublic.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -315,7 +311,6 @@ public class home extends AppCompatActivity
         mapa.setMyLocationEnabled(true);
          mapa.getUiSettings().setZoomControlsEnabled(true);
          mapa.getUiSettings().setCompassEnabled(true);
-
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -328,7 +323,6 @@ public class home extends AppCompatActivity
                 variablesGlobales.latitud=location.getLatitude()+"";
                 variablesGlobales.longitud=location.getLongitude()+"";
                 contador++;
-
                 mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionxy, 16));
                 //mapa.addMarker(new MarkerOptions().position(posicionxy).title("Mi posición").snippet("Emergencias #5666233"));
 
@@ -365,25 +359,31 @@ public class home extends AppCompatActivity
 
         TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
         spec.setContent(R.id.tab1);
-        spec.setIndicator("", res.getDrawable(R.mipmap.news6));
+        spec.setIndicator("Noticia");
+        //spec.setIndicator("Noticias", res.getDrawable(R.mipmap.news6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab2");
         spec.setContent(R.id.tab2);
-        spec.setIndicator("", res.getDrawable(R.mipmap.maps6));
+        spec.setIndicator("Mapa");
+        //spec.setIndicator("", res.getDrawable(R.mipmap.maps6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab3");
         spec.setContent(R.id.tab3);
-        spec.setIndicator("", res.getDrawable(R.mipmap.messenger6));
+        spec.setIndicator("Chat");
+        //spec.setIndicator("", res.getDrawable(R.mipmap.messenger6));
         tabs.addTab(spec);
 
         spec=tabs.newTabSpec("mitab4");
         spec.setContent(R.id.tab4);
-        spec.setIndicator("",res.getDrawable(R.mipmap.info6));
+        spec.setIndicator("Info");
+        //spec.setIndicator("",res.getDrawable(R.mipmap.info6));
         tabs.addTab(spec);
-
         tabs.setCurrentTab(0);
+        for (int i = 0; i < tabs.getTabWidget().getTabCount(); i++) {
+            tabs.getTabWidget().getChildAt(i).getLayoutParams().height = 45;
+        }
         //.TAB
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -454,6 +454,7 @@ public class home extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
         final View header = navigationView.getHeaderView(0);
 
         fotoperfil = (ImageView)header.findViewById(R.id.fotoperfil);
@@ -463,7 +464,8 @@ public class home extends AppCompatActivity
         Glide.with(home.this).load(foto).diskCacheStrategy(DiskCacheStrategy.ALL).into(fotoperfil);
         tvnombresapellidos.setText(nombres+" "+apellidos);
         tvcorreoelectronico.setText(usuario);
-        navigationView.setNavigationItemSelectedListener(null);
+
+        navigationView.setNavigationItemSelectedListener(this);
         recupera_info_emergencia(requestQueue, this);
     }
 
@@ -485,7 +487,6 @@ public class home extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
     @SuppressWarnings("StatementWithEmptyBody")
@@ -493,21 +494,32 @@ public class home extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
+            Intent intent=new Intent(home.this, perfil.class);
+            intent.putExtra("idusuario", variablesGlobales.idusuario_movil);
+            intent.putExtra("avatar", variablesGlobales.avatar_movil);
+            intent.putExtra("nombres", variablesGlobales.nombre_movil);
+
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+            Intent intent=new Intent(home.this, contactos.class);
+            intent.putExtra("idusuario", variablesGlobales.idusuario_movil);
+            intent.putExtra("avatar", variablesGlobales.avatar_movil);
+            intent.putExtra("nombres", variablesGlobales.nombre_movil);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        }else if (id == R.id.nav_send) {
+            final ProgressDialog loading = ProgressDialog.show(home.this,"Cerrando sesión...","Espere por favor...",false,false);
+            sesionMovilUser sm=new sesionMovilUser();
+            requestQueue = Volley.newRequestQueue(home.this);
+            sm.actualizar_estado_sesion(requestQueue,"0",variablesGlobales.idusuario_movil);
+            loading.dismiss();
+            Intent intent=new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -529,7 +541,7 @@ public class home extends AppCompatActivity
                             if (respuestaJSON.getString("estado").equals("1")){
                                 variablesGlobales.cantidadpublicaciones=Integer.parseInt(respuestaJSON.getJSONObject("cantidadpub").getString("cantidadpublicaciones"));
                                 //Log.d("abelsalinas", variablesGlobales.cantidadpublicaciones+"");
-
+                                model=new ArrayList<>();
                                 JSONArray resultadopublicaciones = respuestaJSON.getJSONArray("ultimaspublicaciones");
                                 for(int i=0; i<resultadopublicaciones.length(); i++){
                                     JSONObject resultadoItem = (JSONObject)resultadopublicaciones.get(i);

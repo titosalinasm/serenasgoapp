@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class Adaptador extends BaseAdapter{
         final String tit=arrayList.get(position).getNombre();
         final String fot=arrayList.get(position).getImagen();
 
-        ImageView iv_plus_not=(ImageView)convertView.findViewById(R.id.iv_plus_not);
+        Button iv_plus_not=(Button) convertView.findViewById(R.id.iv_plus_not);
 
         //asignando valores dinamicos
         iv_plus_not.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +97,20 @@ public class Adaptador extends BaseAdapter{
         nombre_entidad.setText(arrayList.get(position).getNombre_entidad());
         hora_fecha.setText(arrayList.get(position).getHora_fech());
 
+        if(arrayList.get(position).getNombre().length()>60) {
+            nombre.setText(arrayList.get(position).getNombre().substring(0, 60)+"...");
+        }else{
+            descripcion.setText(arrayList.get(position).getNombre());
+        }
         nombre.setText(arrayList.get(position).getNombre());
-        descripcion.setText(arrayList.get(position).getDescripcion());
+
+        if(arrayList.get(position).getDescripcion().length()>200) {
+            descripcion.setText(arrayList.get(position).getDescripcion().substring(0, 200)+"...");
+        }else{
+            descripcion.setText(arrayList.get(position).getDescripcion());
+        }
+
+
         Glide.with(context).load(arrayList.get(position).getImagen()).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_imagen);
 
         return convertView;

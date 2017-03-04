@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.titosalinasm.org.serenasgoapp.send_report"
     android:orientation="vertical"
-    android:background="#BDBDBD"
     >
 
     <android.support.v7.widget.Toolbar
@@ -53,7 +52,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="20dp"
-        android:background="@color/colorBlanco"
+        android:background="@drawable/form_borde_rond"
         android:paddingBottom="15dp"
         android:elevation="4dp"
         >
@@ -192,10 +191,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/b_enviar_reporte"
             android:text="Enviar reporte"
-            android:elevation="4dp"
             android:padding="@dimen/input_padding"
-            android:layout_margin="@dimen/input_margin"
-            android:background="@color/colorAccent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/boton_con_borde_verde"
             android:textColor="@color/colorPrimaryLight"
             />
     </LinearLayout>

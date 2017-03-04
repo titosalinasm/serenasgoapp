@@ -9,61 +9,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="2dp"
     android:background="#FFFFFF"
-    android:paddingBottom="10dp"
-
+    android:paddingBottom="3dp"
     >
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/plus"
-        android:layout_gravity="right"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/iv_plus_not"
-        />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            >
-                <TextView
-                    android:id="@+id/i_tv_nombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold|italic"
-                    android:text="Hola soy el titulo"
-                    />
-                <TextView
-                    android:id="@+id/i_tv_descripcion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/i_tv_nombre"
-                    android:text="Hola soy la descripcion"
-                    />
-
-        </RelativeLayout>
-
-
-    <ImageView
-            android:id="@+id/iv_imagen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        android:src="@mipmap/calendario"
-        />
-    <View android:background="#BDBDBD"
-        android:id="@+id/lineaHorizontal"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_width="fill_parent">
-    </View>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,6 +49,61 @@
             android:text="FEcha hora"
             />
     </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/form_borde_rond"
+            android:padding="5dp"
+            >
+                <TextView
+                    android:id="@+id/i_tv_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold|italic"
+                    android:text="Hola soy el titulo"
+                    />
+                <TextView
+                    android:id="@+id/i_tv_descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/i_tv_nombre"
+                    android:text="Hola soy la descripcion"
+                    />
+            <ImageView
+                android:id="@+id/iv_imagen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/calendario"
+                android:layout_below="@+id/i_tv_descripcion"
+                android:layout_marginTop="2dp"
+                />
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+        <Button
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:drawableLeft="@mipmap/ojo"
+            android:text="Más"
+            android:textSize="11dp"
+            android:background="@drawable/boton_con_borde_verde"
+            android:paddingLeft="5dp"
+            android:textColor="#fff"
+            android:id="@+id/iv_plus_not"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>
 
