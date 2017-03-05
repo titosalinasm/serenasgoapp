@@ -502,12 +502,6 @@ public class home extends AppCompatActivity
             intent.putExtra("nombres", variablesGlobales.nombre_movil);
 
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent=new Intent(home.this, contactos.class);
-            intent.putExtra("idusuario", variablesGlobales.idusuario_movil);
-            intent.putExtra("avatar", variablesGlobales.avatar_movil);
-            intent.putExtra("nombres", variablesGlobales.nombre_movil);
-            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         }else if (id == R.id.nav_send) {

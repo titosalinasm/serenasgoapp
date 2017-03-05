@@ -54,7 +54,7 @@ public class sesionMovilUser {
 
                                variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
                                variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
-                               variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+""+
+                               variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
                                                               respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
 
                                  context.startActivity(intent);

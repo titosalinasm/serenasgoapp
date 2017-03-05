@@ -75,9 +75,9 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".chat" />
-        <activity android:name=".send_report" />
-        <activity android:name=".plus_noticia" />
-        <activity android:name=".perfil" />
+        <activity android:name=".send_report" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".plus_noticia" android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".perfil" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".contactos"></activity>
     </application>
 
