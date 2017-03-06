@@ -70,9 +70,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -140,6 +143,7 @@ public class home extends AppCompatActivity
 
     //Refresh tipo facebook
     private SwipeRefreshLayout swipeContainer;
+    HashMap<Marker, MarkerData> mDataMap = new HashMap<>();
     //.Refresh tipo facebook
 
 
@@ -722,6 +726,56 @@ public class home extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
                 // loading.dismiss();
                 //Toast.makeText(context, "No se pudo establecer conexión con el servidor. Revisa tu conexión a internet e intenta conectarte: "+error, Toast.LENGTH_LONG).show();
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+
+    public void drawMarkers(ArrayList<MarkerData> data) {
+        Marker m;
+        for (MarkerData object: data) {
+            m = mapa.addMarker(new MarkerOptions()
+                    .position(object.getLatLng())
+                    .title(object.getTitle())
+                    .icon(BitmapDescriptorFactory.fromBitmap(object.getBitmap())));
+
+            mDataMap.put(m, object);
+        }
+    }
+
+    public void recupera_coordenadas(final RequestQueue req, final Context context){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_coordenas.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            if (respuestaJSON.getString("estado").equals("1")){
+                                JSONArray resultadopublicaciones = respuestaJSON.getJSONArray("coordenadas");
+                                for(int i=0; i<resultadopublicaciones.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadopublicaciones.get(i);
+                                    TEmergenciaView m=new TEmergenciaView();
+                                    m.setNombre_entidad(resultadoItem.getString("nombre_entidad"));
+                                    m.setNumero(resultadoItem.getString("numero"));
+                                    m.setDireccion(resultadoItem.getString("direccion"));
+
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error coordenadas:", error+"");
             }
         }){
             protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {

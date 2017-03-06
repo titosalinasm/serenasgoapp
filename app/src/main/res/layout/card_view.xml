@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="3dp"
             android:background="@drawable/form_borde_rond"
             android:padding="5dp"
             >
@@ -95,7 +95,7 @@
             android:drawableLeft="@mipmap/ojo"
             android:text="Más"
             android:textSize="11dp"
-            android:background="@drawable/boton_con_borde_verde"
+            android:background="@drawable/boton_con_border_verde_plus"
             android:paddingLeft="5dp"
             android:textColor="#fff"
             android:id="@+id/iv_plus_not"
