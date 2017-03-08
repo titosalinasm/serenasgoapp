@@ -121,27 +121,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="1er Contacto"
+                android:hint="+51 Número"
                 android:id="@+id/et_contacto_1"
                 />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="2do Contacto"
+                android:hint="+51 Número"
                 android:id="@+id/et_contacto_2"
                 />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="3er Contacto"
+                android:hint="+51 Número"
                 android:id="@+id/et_contacto_3"
                 />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/b_actualizar"
+                android:id="@+id/b_actualizar_perfil"
                 android:text="Actualizar"
                 android:elevation="4dp"
                 android:padding="@dimen/input_padding"

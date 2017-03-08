@@ -71,8 +71,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@mipmap/sos" />
 
-
-
     <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -88,23 +88,18 @@
         android:layout_gravity="center"
         android:gravity="center"
         >
-
         <Button
-            android:layout_width="75dp"
+            android:layout_width="30dp"
             android:layout_height="30dp"
             android:drawableLeft="@mipmap/ojo"
-            android:text="Más"
-            android:textSize="11dp"
             android:background="@drawable/boton_con_border_verde_plus"
-            android:paddingLeft="5dp"
             android:textColor="#fff"
+            android:padding="4dp"
             android:id="@+id/iv_plus_not"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             />
     </LinearLayout>
-
-
 </LinearLayout>
 
 </LinearLayout>

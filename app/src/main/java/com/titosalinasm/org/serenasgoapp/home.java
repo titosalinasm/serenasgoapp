@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -143,7 +144,6 @@ public class home extends AppCompatActivity
 
     //Refresh tipo facebook
     private SwipeRefreshLayout swipeContainer;
-    HashMap<Marker, MarkerData> mDataMap = new HashMap<>();
     //.Refresh tipo facebook
 
 
@@ -471,6 +471,7 @@ public class home extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         recupera_info_emergencia(requestQueue, this);
+        recupera_coordenadas(requestQueue, this);
     }
 
 
@@ -737,18 +738,12 @@ public class home extends AppCompatActivity
         req.add(stringRequest);
     }
 
-    public void drawMarkers(ArrayList<MarkerData> data) {
-        Marker m;
-        for (MarkerData object: data) {
-            m = mapa.addMarker(new MarkerOptions()
-                    .position(object.getLatLng())
-                    .title(object.getTitle())
-                    .icon(BitmapDescriptorFactory.fromBitmap(object.getBitmap())));
-
-            mDataMap.put(m, object);
-        }
+    protected Marker createMarker(double latitude, double longitude, String title, int bitmap) {
+        return mapa.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(title)
+                .icon(BitmapDescriptorFactory.fromResource(bitmap)));
     }
-
     public void recupera_coordenadas(final RequestQueue req, final Context context){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_coordenas.php",
@@ -758,15 +753,17 @@ public class home extends AppCompatActivity
                         try {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
                             if (respuestaJSON.getString("estado").equals("1")){
-                                JSONArray resultadopublicaciones = respuestaJSON.getJSONArray("coordenadas");
-                                for(int i=0; i<resultadopublicaciones.length(); i++){
-                                    JSONObject resultadoItem = (JSONObject)resultadopublicaciones.get(i);
-                                    TEmergenciaView m=new TEmergenciaView();
-                                    m.setNombre_entidad(resultadoItem.getString("nombre_entidad"));
-                                    m.setNumero(resultadoItem.getString("numero"));
-                                    m.setDireccion(resultadoItem.getString("direccion"));
+                                JSONArray resultadocoordenadas = respuestaJSON.getJSONArray("coordenadas");
+                                for(int i=0; i<resultadocoordenadas.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadocoordenadas.get(i);
 
+                                    if(resultadoItem.getString("lat")!="null" && resultadoItem.getString("long")!="null") {
+                                        createMarker(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , "este es mi titulo", R.mipmap.maps6);
+                                    }
                                 }
+
+                                //drawMarkers()
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
