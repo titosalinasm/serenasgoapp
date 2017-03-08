@@ -1,6 +1,7 @@
 package com.titosalinasm.org.serenasgoapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -25,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*Loading*/
    ProgressBar progressBar;
+    Button brefhesh_inter;
 
 
     @Override
@@ -54,13 +57,24 @@ public class MainActivity extends AppCompatActivity {
 
         //firebase messaje event
 
-
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
+        brefhesh_inter=(Button)findViewById(R.id.brefhesh_inter);
         progressBar.setVisibility(View.VISIBLE);
+
+        brefhesh_inter.setVisibility(View.GONE);
 
         requestQueue = Volley.newRequestQueue(this);
         sesionMovilUser sesionum= new sesionMovilUser();
-        sesionum.estado_sesion_movil(MainActivity.this, requestQueue, infoMovil.getImei(getApplicationContext()));
+        sesionum.estado_sesion_movil(MainActivity.this, requestQueue, infoMovil.getImei(getApplicationContext()), progressBar, brefhesh_inter);
+        brefhesh_inter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         printKeyHash();
         /*
         if (sesionum.estado_sesion_movil(MainActivity.this, requestQueue, infoMovil.getImei(getApplicationContext()))) {

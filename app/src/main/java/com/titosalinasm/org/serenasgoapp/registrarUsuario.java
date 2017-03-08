@@ -62,7 +62,6 @@ public class registrarUsuario extends AppCompatActivity implements View.OnClickL
             String nombres = etnombres.getText().toString();
             String apellidos = etapellidos.getText().toString();
             String genero = "";
-            Intent i = new Intent(this, mail_clave.class);
 
             if (rhombre.isChecked()) {
                 genero = "H";
@@ -88,17 +87,37 @@ public class registrarUsuario extends AppCompatActivity implements View.OnClickL
             String codigo_confirmacion = infoMovil.codigoConfirmacion(10);
 
             //enviando datos al servidor
-            sesionMovilUser smu = new sesionMovilUser();
-            requestQueue = Volley.newRequestQueue(this);
-            final ProgressDialog loading = ProgressDialog.show(registrarUsuario.this,"Registrando...","Espere por favor...",false,false);
-            // final ProgressDialog loading = ProgressDialog.show(registrarUsuario.this,"Uploading... ","Please wait...",false,false);
-            smu.crear_nuevo_usuario_correo(requestQueue, correo, clave, nombres, apellidos, genero,
-                    direccion, telefono, fabricante, version_so,
-                    modelo, marca, imei, codigo_confirmacion, "correo", "avatar.png", getApplicationContext(),loading);
-
-            if (v == ivatraz) {
-                finish();
+            if(nombres.trim().length()>2) {
+                if(apellidos.trim().length()>2) {
+                    if(genero.trim().length()>0) {
+                        if(telefono.trim().length()>8 && telefono.trim().length()<13) {
+                            sesionMovilUser smu = new sesionMovilUser();
+                            requestQueue = Volley.newRequestQueue(this);
+                            final ProgressDialog loading = ProgressDialog.show(registrarUsuario.this, "Registrando...", "Espere por favor...", false, false);
+                            // final ProgressDialog loading = ProgressDialog.show(registrarUsuario.this,"Uploading... ","Please wait...",false,false);
+                            smu.crear_nuevo_usuario_correo(requestQueue, correo, clave, nombres, apellidos, genero,
+                                    direccion, telefono, fabricante, version_so,
+                                    modelo, marca, imei, codigo_confirmacion, "correo", "null", registrarUsuario.this, loading);
+                        }else{
+                            Toast.makeText(this, "Número de celular no válido.", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(this, "Seleccione un genero.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(this, "El apellido ingresado no es correcto.", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "El nombre ingresado no es correcto.", Toast.LENGTH_SHORT).show();
             }
+
+
+
+        }
+
+        if (v == ivatraz) {
+            finish();
         }
     }
 }

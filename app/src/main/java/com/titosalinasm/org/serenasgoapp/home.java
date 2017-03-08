@@ -144,6 +144,7 @@ public class home extends AppCompatActivity
 
     //Refresh tipo facebook
     private SwipeRefreshLayout swipeContainer;
+    private SwipeRefreshLayout view_refresh;
     //.Refresh tipo facebook
 
 
@@ -232,7 +233,9 @@ public class home extends AppCompatActivity
         lista = (ListView) findViewById(R.id.h_lv_modelo);
         listaEmergencia=(ListView)findViewById(R.id.lv_info_emergencia);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlContainer);
+        view_refresh=(SwipeRefreshLayout)findViewById(R.id.view_refresh);
         swipeContainer.setOnRefreshListener(this);
+        view_refresh.setOnRefreshListener(this);
         publicacionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -526,10 +529,10 @@ public class home extends AppCompatActivity
     @Override
     public void onRefresh() {
         swipeContainer.setRefreshing(false);
+        view_refresh.setRefreshing(false);
     }
 
     public void recupera_ultimas_publicaciones(final RequestQueue req, final Context context){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_ultimas_publicaciones.php",
                 new Response.Listener<String>() {
                     @Override

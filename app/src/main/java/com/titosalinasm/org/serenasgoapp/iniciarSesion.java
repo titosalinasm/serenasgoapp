@@ -128,8 +128,6 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
         tvregistrate.setOnClickListener(this);
         /*fin inicializa variables de xml*/
 
-        etusuario.setText("titosalinasm@hotmail.com");
-        etclave.setText("123456");
 
         /*Login Google plus*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -144,7 +142,6 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
         //laza las acciones cuando se presiona onclick signButton
         signInButton.setOnClickListener(this);
         /*FIN Login Google plus*/
-
 
         //LOGIN FACEBOOK
         bfacebook=(Button)findViewById(R.id.bfacebook);
@@ -229,7 +226,8 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
             if (smu.validateEmail(etusuario.getText().toString())) {
                 if ( etclave.getText().toString().length()>5 ) {
                     requestQueue = Volley.newRequestQueue(this);
-                    smu.validar_usuario(iniciarSesion.this, requestQueue,etusuario.getText().toString(), etclave.getText().toString() );
+                    final ProgressDialog loading = ProgressDialog.show(this, "Comprobando...", "Espere por favor...", false, false);
+                    smu.validar_usuario(iniciarSesion.this, requestQueue,etusuario.getText().toString(), etclave.getText().toString(), loading );
 
                 }else{
                     Toast.makeText(iniciarSesion.this, "Escribe una contraseña de por lo menos 6 dígitos.", Toast.LENGTH_LONG).show();

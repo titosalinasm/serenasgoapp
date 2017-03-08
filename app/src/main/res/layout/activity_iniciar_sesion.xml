@@ -58,7 +58,7 @@
             android:elevation="4dp"
             android:padding="@dimen/input_padding"
             android:layout_margin="@dimen/input_margin"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/boton_con_borde_verde"
             android:textColor="@color/colorPrimaryLight" />
 
         <TextView

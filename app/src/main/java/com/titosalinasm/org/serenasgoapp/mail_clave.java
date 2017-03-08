@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -30,9 +31,6 @@ public class mail_clave extends AppCompatActivity implements View.OnClickListene
         pwrclave=(EditText) findViewById(R.id.pwrclave);
         bsiguiente=(Button) findViewById(R.id.bsiguiente);
 
-        etcorreo.setText("titosalinasm@hotmail.com");
-        pwrclave.setText("123456");
-        pwclave.setText("123456");
 
         bsiguiente.setOnClickListener(this);
         ivatraz.setOnClickListener(this);

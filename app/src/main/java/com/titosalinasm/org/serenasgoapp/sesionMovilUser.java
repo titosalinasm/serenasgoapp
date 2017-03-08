@@ -5,7 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,7 +35,7 @@ public class sesionMovilUser {
     private static final String TAG = sesionMovilUser.class.getSimpleName();
     private ListView lista;
     private Adaptador adapter;
-    public void estado_sesion_movil(final Context context, final RequestQueue req, final String ime){
+    public void estado_sesion_movil(final Context context, final RequestQueue req, final String ime, final ProgressBar progressBar, final Button button){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"estado_sesion_movil.php",
                 new Response.Listener<String>() {
                     @Override
@@ -67,13 +70,17 @@ public class sesionMovilUser {
                                 ((Activity)(context)).finish();
                             }
                         } catch (JSONException e) {
+                            button.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Lo sentimos, algo salió mal: "+error, Toast.LENGTH_LONG).show();
+                button.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                //Toast.makeText(context, "Lo sentimos, algo salió mal: "+error, Toast.LENGTH_LONG).show();
             }
         }){
             protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
@@ -132,6 +139,8 @@ public class sesionMovilUser {
                                            String modelo, String marca, final String imei, String codigo_confirmacion,
                                            final String social, final String avatar, final Context context,
                                            final ProgressDialog loading){
+
+        //aquí todos
         final RequestQueue req1=req;
         //datos de persona
         final String fnombres=nombres;
@@ -167,6 +176,7 @@ public class sesionMovilUser {
                                     intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
                                     intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
                                     intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+
                                     variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
                                     variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
                                     variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
@@ -220,7 +230,7 @@ public class sesionMovilUser {
         req1.add(stringRequest);
 
     }
-    public void validar_usuario(final Context context, final RequestQueue req, final String usuario, final String clave){
+    public void validar_usuario(final Context context, final RequestQueue req, final String usuario, final String clave, final ProgressDialog loading){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"compruebausuario.php",
                 new Response.Listener<String>() {
@@ -231,10 +241,34 @@ public class sesionMovilUser {
                             JSONObject respuestaJSON = new JSONObject(response.toString());
                             //verifica si el movil esta registrado
                             if (respuestaJSON.getString("estado").equals("1")){
-                                Toast.makeText(context, respuestaJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                                actualizar_estado_sesion(req,"1",respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario"));
+                                Intent intent = new Intent(context, home.class);
+                                intent.putExtra("usuario",respuestaJSON.getJSONObject("usuariocompleto").getString("nombre_usuario"));
+                                intent.putExtra("idusuario", respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") );
+                                intent.putExtra("foto", respuestaJSON.getJSONObject("usuariocompleto").getString("avatar"));
+                                intent.putExtra("nombres", respuestaJSON.getJSONObject("usuariocompleto").getString("nombres"));
+                                intent.putExtra("apellidos", respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos"));
+                                variablesGlobales.idusuario_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("idusuario") ;
+                                variablesGlobales.avatar_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("avatar");
+                                variablesGlobales.nombre_movil=respuestaJSON.getJSONObject("usuariocompleto").getString("nombres")+" "+
+                                        respuestaJSON.getJSONObject("usuariocompleto").getString("apellidos");
+                                context.startActivity(intent);
+                                ((Activity)(context)).finish();
+                                loading.dismiss();
+
+                                //Toast.makeText(context, respuestaJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
 
                             }else{
-                                Toast.makeText(context, respuestaJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                                if(respuestaJSON.getString("estado").equals("2")){
+                                    loading.dismiss();
+                                    Toast.makeText(context, respuestaJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                                }else{
+                                    if(respuestaJSON.getString("estado").equals("3")){
+                                        loading.dismiss();
+                                        Toast.makeText(context, respuestaJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
 
                                 //Intent intent = new Intent(context, iniciarSesion.class);
                                 //context.startActivity(intent);
@@ -247,6 +281,7 @@ public class sesionMovilUser {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
                 Toast.makeText(context, "No se pudo establecer conexión con el servidor. Revisa tu conexión a internet e intenta conectarte: "+error, Toast.LENGTH_LONG).show();
             }
         }){

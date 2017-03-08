@@ -22,9 +22,25 @@
             android:layout_height="match_parent"
             android:id="@+id/ivatraz"
             android:src="@mipmap/ic_arrow_back_white_24dp"
-            android:paddingRight="20dp"
 
             />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_toRightOf="@+id/iv_categoria_rep"
+                android:id="@+id/tv_categoria_rep"
+                android:text="Informacion de usuario"
+                android:textSize="18dp"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:paddingTop="15dp"
+                android:textColor="#ffffff"
+                />
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
 
@@ -32,10 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="@color/colorBlanco"
+        android:background="@drawable/form_borde_rond"
         android:layout_margin="@dimen/input_margin"
         >
-
 
         <TextView
             android:layout_width="match_parent"
@@ -43,7 +58,7 @@
             android:text="NOMBRES Y APELLIDOS"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimary"
             android:layout_marginLeft="10dp"
             android:textIsSelectable="false"
             android:textStyle="bold"
@@ -52,7 +67,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:id="@+id/etnombres"
             android:hint="Nombres"
             android:padding="@dimen/input_padding"
@@ -64,7 +78,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:id="@+id/etapellidos"
             android:hint="Apellidos"
             android:textStyle="italic"
@@ -78,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="GENERO"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimary"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
@@ -126,29 +139,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="EXTRAS (Opcional)"
+            android:text="CONTACTAME AQUÍ"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:textIsSelectable="false"
             android:theme="@style/AlertDialog.AppCompat"
             android:textStyle="bold"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorPrimary"
             />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:id="@+id/etdireccion"
-            android:hint="Dirección"
-            android:textStyle="italic"
-            android:padding="@dimen/input_padding"
-            android:layout_margin="@dimen/input_margin"
-            android:textColor="@color/colorSecondaryText"
-            />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:inputType="phone"
             android:id="@+id/ettelefono"
             android:hint="Celular"
             android:textStyle="italic"
@@ -157,19 +159,37 @@
             android:textColor="@color/colorSecondaryText"
             />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etdireccion"
+            android:hint="Dirección (Opcional)"
+            android:textStyle="italic"
+            android:padding="@dimen/input_padding"
+            android:layout_margin="@dimen/input_margin"
+            android:textColor="@color/colorSecondaryText"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrarme  "
+                android:id="@+id/bregistrarme"
+                android:textStyle="normal|bold"
+                android:textColor="@color/colorBlanco"
+                android:drawableRight="@mipmap/next_10x15"
+                android:background="@drawable/boton_con_borde_verde"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bregistrarme"
-        android:text="Registrarme"
-        android:elevation="4dp"
-        android:textStyle="normal|bold"
-        android:padding="@dimen/input_padding"
-        android:layout_margin="@dimen/input_margin"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorBlanco" />
 </LinearLayout>
 </ScrollView>

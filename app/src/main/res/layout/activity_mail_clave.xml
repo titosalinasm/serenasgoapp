@@ -11,7 +11,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-
         >
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
@@ -24,15 +23,31 @@
                 android:id="@+id/ivatraz"
                 android:src="@mipmap/ic_arrow_back_white_24dp"
                 />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_toRightOf="@+id/iv_categoria_rep"
+                    android:id="@+id/tv_categoria_rep"
+                    android:text="Registrar correo"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:paddingTop="15dp"
+                    android:textColor="#ffffff"
+                    />
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
-
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@color/colorBlanco"
+    android:background="@drawable/form_borde_rond"
     android:layout_margin="@dimen/input_margin"
     >
     <TextView
@@ -41,7 +56,7 @@
         android:text="REGISTRAR UNA NUEVA CUENTA"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimary"
         android:layout_marginLeft="10dp"
         android:textIsSelectable="false"
         android:textStyle="bold"
@@ -88,22 +103,26 @@
         android:drawableLeft="@mipmap/ic_lock_black_24dp"
         android:drawablePadding="5dp"
         />
-
-</LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        >
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Siguiente   "
             android:id="@+id/bsiguiente"
-            android:text="Siguiente"
-            android:elevation="4dp"
-
             android:textStyle="normal|bold"
-            android:padding="@dimen/input_padding"
-            android:layout_margin="@dimen/input_margin"
-            android:background="@color/colorPrimary"
             android:textColor="@color/colorBlanco"
+            android:drawableRight="@mipmap/next_10x15"
+            android:background="@drawable/boton_con_borde_verde"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             />
+    </LinearLayout>
+</LinearLayout>
 
 
     </LinearLayout>

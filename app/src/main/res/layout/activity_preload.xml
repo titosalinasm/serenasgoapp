@@ -6,27 +6,53 @@
     android:orientation="horizontal">
 
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
 
 
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:layout_marginTop="200dp"
             android:src="@mipmap/logoserapp_sesion" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="280dp"
+            android:layout_below="@+id/imageView"
             android:progressDrawable="@drawable/circular_drawable_view"
             android:id="@+id/progressBar"
             android:layout_gravity="center_vertical" />
-    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="15dp"
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Intentar otra vez "
+                android:id="@+id/brefhesh_inter"
+                android:textStyle="normal|bold"
+                android:textColor="@color/colorBlanco"
+                android:drawableRight="@mipmap/refesh_icon1_15x15"
+                android:background="@drawable/boton_con_borde_verde"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 
