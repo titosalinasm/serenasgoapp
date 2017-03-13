@@ -28,7 +28,6 @@ public class SosAsyncTask  extends AsyncTask<String, Void, String>{
     Activity activity;
 
     public SosAsyncTask(Context context, final AlertDialog alertDialog, Activity activity) {
-
         this.context = context;
         this.alertDialog=alertDialog;
         this.activity=activity;

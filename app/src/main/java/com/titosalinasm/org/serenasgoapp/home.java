@@ -303,7 +303,9 @@ public class home extends AppCompatActivity
 
         mapa = ((SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
-        mapa.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        LatLng huaraz = new LatLng(-9.529205005406501, -77.52719133226321);
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(huaraz, 15));
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -316,8 +318,8 @@ public class home extends AppCompatActivity
             return;
         }
         mapa.setMyLocationEnabled(true);
-         mapa.getUiSettings().setZoomControlsEnabled(true);
          mapa.getUiSettings().setCompassEnabled(true);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -329,17 +331,7 @@ public class home extends AppCompatActivity
                 LatLng posicionxy = new LatLng(location.getLatitude(), location.getLongitude());
                 variablesGlobales.latitud=location.getLatitude()+"";
                 variablesGlobales.longitud=location.getLongitude()+"";
-                contador++;
-                mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionxy, 16));
-                //mapa.addMarker(new MarkerOptions().position(posicionxy).title("Mi posición").snippet("Emergencias #5666233"));
-
-                Circle circle = mapa.addCircle(new CircleOptions()
-                        .center(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .radius(1).strokeColor(Color.BLUE));
-
-                // Toast.makeText(MapsActivity.this, "coordenadas " + contador+": ("+location.getLatitude()+", "+location.getLongitude()+")", Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -533,6 +525,7 @@ public class home extends AppCompatActivity
     }
 
     public void recupera_ultimas_publicaciones(final RequestQueue req, final Context context){
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_ultimas_publicaciones.php",
                 new Response.Listener<String>() {
                     @Override
@@ -715,7 +708,6 @@ public class home extends AppCompatActivity
                                     m.setDireccion(resultadoItem.getString("direccion"));
                                     modeloEmergencias.add(m);
                                                           }
-
                                 adaptador_emergencias=new adaptadorEmergencias(modeloEmergencias, home.this);
                                 listaEmergencia=(ListView)findViewById(R.id.lv_info_emergencia);
                                 listaEmergencia.setAdapter(adaptador_emergencias);
@@ -741,7 +733,7 @@ public class home extends AppCompatActivity
         req.add(stringRequest);
     }
 
-    protected Marker createMarker(double latitude, double longitude, String title, int bitmap) {
+    protected Marker createMarkerSos(double latitude, double longitude, String title, int bitmap) {
         return mapa.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
@@ -759,13 +751,10 @@ public class home extends AppCompatActivity
                                 JSONArray resultadocoordenadas = respuestaJSON.getJSONArray("coordenadas");
                                 for(int i=0; i<resultadocoordenadas.length(); i++){
                                     JSONObject resultadoItem = (JSONObject)resultadocoordenadas.get(i);
+                                    createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("detalle_sos"), R.mipmap.marker_sos_new);
 
-                                    if(resultadoItem.getString("lat")!="null" && resultadoItem.getString("long")!="null") {
-                                        createMarker(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
-                                                , "este es mi titulo", R.mipmap.maps6);
-                                    }
                                 }
-
                                 //drawMarkers()
                             }
                         } catch (JSONException e) {

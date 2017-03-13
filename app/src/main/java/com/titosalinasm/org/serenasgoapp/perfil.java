@@ -188,7 +188,6 @@ public class perfil extends AppCompatActivity {
                                   final String contacto_1, final String contacto_2, final String contacto_3){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"actualiza_perfil.php",
                 new Response.Listener<String>() {
-
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onResponse(String response) {

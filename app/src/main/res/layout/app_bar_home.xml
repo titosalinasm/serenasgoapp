@@ -26,6 +26,14 @@
                 />
 
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/iv_logo_serapp_home"
+                android:src="@mipmap/logo_serapp_home2"
+                android:layout_marginLeft="40dp"
+                />
+
+            <ImageView
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:src="@mipmap/messenger_new_sms"

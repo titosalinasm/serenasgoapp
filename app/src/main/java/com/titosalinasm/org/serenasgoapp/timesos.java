@@ -84,12 +84,17 @@ public class timesos extends DialogFragment {
             @Override
             public void onFinish() {
                 progressBar.setVisibility(View.INVISIBLE);
-                tv_segundo.setTextSize(14);
-                tv_segundo.setText("ENVIANDO SOS...");
                 //envia_SOS(requestQueue);
                 //Log.d("error jessit", variablesGlobales.idusuario);
-                new SosAsyncTask(getContext(), alertsos, getActivity()).execute("POST",""+variablesGlobales.idusuario,
-                        ""+variablesGlobales.latitud, ""+variablesGlobales.longitud);
+                if(variablesGlobales.latitud!=null && variablesGlobales.longitud!=null) {
+                    tv_segundo.setTextSize(14);
+                    tv_segundo.setText("ENVIANDO SOS...");
+                    new SosAsyncTask(getContext(), alertsos, getActivity()).execute("POST", "" + variablesGlobales.idusuario,
+                            "" + variablesGlobales.latitud, "" + variablesGlobales.longitud);
+                }else{
+                    alertsos.dismiss();
+                    Toast.makeText(getContext(), "Lo sentimos no capturamos tu ubicación, intentalo otra vez", Toast.LENGTH_SHORT).show();
+                }
                 //Log.d("Falta data", "Finalizo los 5 segundos");
             }
         };
@@ -111,7 +116,6 @@ public class timesos extends DialogFragment {
         Map<String,Object> map_key = new HashMap<String, Object>();
        String temp_key = sosRef.push().getKey();
         sosRef.updateChildren(map_key);
-
         DatabaseReference datos_in_key_sos = sosRef.child(temp_key);
         Map<String,Object> map_datos = new HashMap<String, Object>();
         map_datos.put("idsos", idsos);
@@ -120,7 +124,7 @@ public class timesos extends DialogFragment {
         map_datos.put("fecha_hora_sos",fecha_hora_sos);
         map_datos.put("idusuario_send_sos",idusuario_send_sos);
         map_datos.put("idusuario_attend_sos",idusuario_attend_sos);
-        map_datos.put("estado",estado);
+        map_datos.put("estado","0");
         map_datos.put("condicion",condicion);
         map_datos.put("detalle_sos",detalle_sos);
         map_datos.put("nombres_apellidos",nombre_apellidos);
