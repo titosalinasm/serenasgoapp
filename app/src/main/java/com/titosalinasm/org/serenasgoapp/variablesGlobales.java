@@ -1,7 +1,12 @@
 package com.titosalinasm.org.serenasgoapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Salinas on 12/08/2016.
@@ -28,4 +33,11 @@ public class variablesGlobales {
     public static boolean existencia_usuario=false;
     public static boolean ccrear_persona=false;
     public static String mensajes="";
+    public static String tutorial_player;
+
+    public static String contacto1;
+    public static String contacto2;
+    public static String contacto3;
+
+
 }

@@ -56,33 +56,34 @@ public class chat extends AppCompatActivity {
         refChat.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.i("error tito", dataSnapshot.getKey());
 
-               String vidusuario=dataSnapshot.child("idusuario").getValue().toString();
+                    String vidusuario = dataSnapshot.child("idusuario").getValue().toString();
 
-                String nombre=dataSnapshot.child("nombre").getValue().toString();
+                    String nombre = dataSnapshot.child("nombre").getValue().toString();
 
-                String avatar=dataSnapshot.child("avatar").getValue().toString();
-                String mensaje=dataSnapshot.child("msg").getValue().toString();
+                    String avatar = dataSnapshot.child("avatar").getValue().toString();
+                    String mensaje = dataSnapshot.child("msg").getValue().toString();
 
-                if (dataSnapshot.child("estado").getValue().toString().equals("1")){
-                    refChat.child(dataSnapshot.getKey()).child("estado").setValue(0);
-                }
+                    if (dataSnapshot.child("estado").getValue().toString().equals("1") && variablesGlobales.idusuario != vidusuario) {
+                        refChat.child(dataSnapshot.getKey()).child("estado").setValue(0);
+                    }
 
-                String fecha_hora=dataSnapshot.child("fecha_hora").getValue().toString();
+                    String fecha_hora = dataSnapshot.child("fecha_hora").getValue().toString();
 
-                    TMessageView m=new TMessageView();
+                    TMessageView m = new TMessageView();
                     m.setIdusuariosuario(vidusuario);
                     m.setNombreRemitente(nombre);
                     m.setImgAvatar(avatar);
                     m.setMensajeRemitente(mensaje);
 
-                modeloMensaje.add(m);
-                adaptadorMensajev=new adaptadorMensaje(modeloMensaje, chat.this);
+                    modeloMensaje.add(m);
+                    adaptadorMensajev = new adaptadorMensaje(modeloMensaje, chat.this);
 
-                lv_mensajes=(GridView)findViewById(R.id.lv_mensajes);
-                lv_mensajes.setAdapter(adaptadorMensajev);
-                adaptadorMensajev.notifyDataSetChanged();
-                lv_mensajes.setSelection(adaptadorMensajev.getCount()-1);
+                    lv_mensajes = (GridView) findViewById(R.id.lv_mensajes);
+                    lv_mensajes.setAdapter(adaptadorMensajev);
+                    adaptadorMensajev.notifyDataSetChanged();
+                    lv_mensajes.setSelection(adaptadorMensajev.getCount() - 1);
 
 
             }
@@ -117,7 +118,7 @@ public class chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(msg_input.getText().toString().trim().length()>0) {
-                    metodos_practicos fech = new metodos_practicos();
+                     metodos_practicos fech = new metodos_practicos();
                     String fecha_our = fech.fecha_hora();
                     Map<String, Object> map = new HashMap<String, Object>();
                     String temp_key = refChat.push().getKey();
@@ -131,7 +132,7 @@ public class chat extends AppCompatActivity {
                     map2.put("fecha_hora", fecha_our.toString());
                     map2.put("nombre_attend", "");
                     map2.put("avatar_attend", "");
-                    map2.put("estado", "0");
+                    map2.put("estado", "2");
                     message_root.updateChildren(map2);
                     msg_input.setText("");
                 }

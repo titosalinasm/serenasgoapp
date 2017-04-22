@@ -2,6 +2,7 @@ package com.titosalinasm.org.serenasgoapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,10 +10,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class plus_noticia extends AppCompatActivity {
+    ImageView ivatraz;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plus_noticia);
+
+        ivatraz=(ImageView)findViewById(R.id.ivatraz);
+        ivatraz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ImageView avatar_logo=(ImageView)findViewById(R.id.avatar_logo);
         TextView nombre_entidad=(TextView)findViewById(R.id.nombre_entidad);

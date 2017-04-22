@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,6 +91,8 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
     LocationManager locationManager;
     AlertDialog alert = null;
 
+    ImageView ivatraz;
+
     /*camara galeria*/
     private AlertDialog _photoDialog;
     private Uri mImageUri;
@@ -114,12 +117,20 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
         iv_select_img=(ImageView)findViewById(R.id.iv_select_img);
         et_descripcion_reporte=(EditText)findViewById(R.id.et_descripcion_reporte);
         b_enviar_reporte=(Button)findViewById(R.id.b_enviar_reporte);
+        ivatraz=(ImageView)findViewById(R.id.ivatraz);
+        ivatraz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         Bundle bundle = getIntent().getExtras();
         String img_categoria=bundle.getString("url_img_report");
         String nombre_categoria=bundle.getString("nombre_categoria");
-         idcategoria_rep=bundle.getString("idcategoria_rep");
+        idcategoria_rep=bundle.getString("idcategoria_rep");
 
         Glide.with(this).load(img_categoria).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_categoria_rep_body);
         Glide.with(this).load(img_categoria).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_categoria_rep);
@@ -162,6 +173,10 @@ public class send_report extends AppCompatActivity implements DialogInterface.On
                             new ReportAsyncTask(send_report.this)
                                     .execute("POST", variablesGlobales.idusuario_movil, idcategoria_rep, imagen_draw, et_fecha_hora.getText().toString(),
                                             et_descripcion_reporte.getText().toString(), variablesGlobales.latitud, variablesGlobales.longitud);
+                            et_descripcion_reporte.setText("");
+                            iv_select_img.setImageDrawable(ActivityCompat.getDrawable(send_report.this,R.mipmap.selectfoto1));
+                            iv_select_img.setPadding(30, 30, 30,30);
+                            imagenBitmap=null;
                         } else {
                             Toast.makeText(send_report.this, "Su descripcion de lo sucedido esta vacio.", Toast.LENGTH_SHORT).show();
                         }

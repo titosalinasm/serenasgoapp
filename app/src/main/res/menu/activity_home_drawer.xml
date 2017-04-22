@@ -6,7 +6,11 @@
             android:icon="@drawable/ic_perfils"
             android:title="Mi perfil"
             />
-
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/ic_youtube"
+            android:title="Tutorial"
+            />
     </group>
 
     <item android:title="Serapp">

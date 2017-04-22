@@ -1,10 +1,13 @@
 package com.titosalinasm.org.serenasgoapp;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,6 +133,26 @@ public class timesos extends DialogFragment {
         map_datos.put("nombres_apellidos",nombre_apellidos);
         map_datos.put("avatar",avatar_user);
         datos_in_key_sos.updateChildren(map_datos);
+        send_sos_contacto(latitud, longitud);
+    }
+
+    public void send_sos_contacto(String la, String lo){
+
+        String phone1 = variablesGlobales.contacto1;
+        String phone2 = variablesGlobales.contacto2;
+        String phone3 = variablesGlobales.contacto3;
+        String text = "Emergencia: http://maps.google.com/?q=loc:"+la.substring(0, 8)+","+lo.substring(0,8)+"";
+        SmsManager sms = SmsManager.getDefault();
+        if(phone1.length()>9) {
+            sms.sendTextMessage(phone1, null, text, null, null);
+        }
+        if(phone1.length()>9) {
+            sms.sendTextMessage(phone2, null, text, null, null);
+        }
+        if(phone1.length()>9) {
+            sms.sendTextMessage(phone3, null, text, null, null);
+        }
+
     }
 
 }

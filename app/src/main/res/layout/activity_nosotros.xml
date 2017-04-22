@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_nosotros"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/ivatraz"
+            android:src="@mipmap/ic_arrow_back_white_24dp"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/tv_nombre_perfil"
+                android:text="¿Quienes somos?"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:paddingTop="15dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="#ffffff"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logo_serapp_pre_load1"
+            android:layout_margin="20dp"
+            android:id="@+id/iv_img_url"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nosotros"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:id="@+id/tv_titulo"
+            android:layout_margin="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SerApp es una aplicación móvil creada por estudiantes de la Universidad Nacional Santiago Antúnez de Mayolo, el cual tiene por objetivo apoyar la seguridad ciudadana. Si Usted tiene información acerca de un crimen o alguna emergencia repórtelo a SerApp, no dudes en utilizar la aplicación y se le brindara la ayuda correspondiente."
+            android:id="@+id/tv_descripcion"
+            />
+    </LinearLayout>
+</LinearLayout>

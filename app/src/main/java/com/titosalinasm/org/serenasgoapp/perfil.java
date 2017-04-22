@@ -49,6 +49,7 @@ public class perfil extends AppCompatActivity {
     EditText et_contacto_3;
 
     Button b_actualizar_perfil;
+    ImageView ivatraz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,13 @@ public class perfil extends AppCompatActivity {
         tv_nombre_perfil=(TextView)findViewById(R.id.tv_nombre_perfil);
 
         b_actualizar_perfil=(Button)findViewById(R.id.b_actualizar_perfil);
+        ivatraz=(ImageView)findViewById(R.id.ivatraz);
+        ivatraz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         et_nombres=(EditText)findViewById(R.id.et_nombres);
         et_apellidos=(EditText)findViewById(R.id.et_apellidos);
@@ -116,7 +124,6 @@ public class perfil extends AppCompatActivity {
                                 et_apellidos.setText(resultadoperfil.getString("apellidos"));
                                 et_direccion.setText(resultadoperfil.getString("direccion"));
                                 et_telefono.setText(resultadoperfil.getString("telefono"));
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

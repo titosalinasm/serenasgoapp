@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         sesionMovilUser sesionum= new sesionMovilUser();
-        sesionum.estado_sesion_movil(MainActivity.this, requestQueue, infoMovil.getImei(getApplicationContext()), progressBar, brefhesh_inter);
+        sesionum.estado_sesion_movil(MainActivity.this, requestQueue, "", progressBar, brefhesh_inter);
         brefhesh_inter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
        */
+
     }
 
     private void printKeyHash() {

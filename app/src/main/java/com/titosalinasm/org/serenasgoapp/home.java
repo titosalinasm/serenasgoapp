@@ -11,7 +11,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,12 +26,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
+import android.preference.PreferenceFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentHostCallback;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -159,13 +163,19 @@ public class home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if(!getpreferencia(this).toString().equals("1")){
+            Intent intent=new Intent(this, tutorial_inicial.class);
+            startActivity(intent);
+            savepreferencia(this,"1");
+        }
+
+
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         FirebaseInstanceId.getInstance().getToken();
         //.firebase messaje event
         //variables del archivo home.xml
         tv_chatprueba = (Button) findViewById(R.id.tv_chatprueba);
-
-
 
         tv_ver_messemger=(TextView)findViewById(R.id.tv_ver_messemger);
         tv_ver_messemger.setOnClickListener(new View.OnClickListener() {
@@ -187,10 +197,13 @@ public class home extends AppCompatActivity
         refChat.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-               if(dataSnapshot.child("estado").getValue().toString().equals("1")){
-                   cuenta_msm_sin_read++;
-                   tv_ver_messemger.setText(""+cuenta_msm_sin_read);
-               }
+
+                    if (dataSnapshot.child("estado").getValue().toString().equals("1") && variablesGlobales.idusuario != dataSnapshot.child("idusuario").getValue().toString()) {
+                        cuenta_msm_sin_read++;
+                        tv_ver_messemger.setText("" + cuenta_msm_sin_read);
+                    }
+
+
             }
 
             @Override
@@ -227,7 +240,7 @@ public class home extends AppCompatActivity
         //Captura conexion del servidor
         requestQueue = Volley.newRequestQueue(this);
         //Captura conexion del servidor
-
+        recupera_contactos(requestQueue, this ,variablesGlobales.idusuario);
         //recupera las ultimas publicaciones disponibles
         recupera_ultimas_publicaciones(requestQueue, home.this);
         lista = (ListView) findViewById(R.id.h_lv_modelo);
@@ -239,7 +252,6 @@ public class home extends AppCompatActivity
         publicacionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 if (variablesGlobales.sucesofirebase > 1) {
                     /*
                     Iterator i = dataSnapshot.getChildren().iterator();
@@ -255,7 +267,7 @@ public class home extends AppCompatActivity
                     variablesGlobales.limite_inferior_publicacion = 2;
                     recupera_ultimas_publicaciones(requestQueue, home.this);
 
-                } else {
+                }else {
                     variablesGlobales.sucesofirebase++;
                 }
             }
@@ -280,7 +292,6 @@ public class home extends AppCompatActivity
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
                 if (variablesGlobales.cantidadpublicaciones > variablesGlobales.limite_inferior_publicacion) {
                     if (userScrolled
                             && firstVisibleItem + visibleItemCount == totalItemCount) {
@@ -294,7 +305,6 @@ public class home extends AppCompatActivity
                     swipeContainer.setRefreshing(false);
 
                 }
-
             }
         });
         //.recupera las ultimas publicaciones disponibles
@@ -305,7 +315,7 @@ public class home extends AppCompatActivity
                 .findFragmentById(R.id.map)).getMap();
         mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         LatLng huaraz = new LatLng(-9.529205005406501, -77.52719133226321);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(huaraz, 15));
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(huaraz, 14));
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -389,7 +399,8 @@ public class home extends AppCompatActivity
 
         FloatingActionButton fab_sos = (FloatingActionButton) findViewById(R.id.fab_sos);
          FloatingActionButton fab_tegoria = (FloatingActionButton) findViewById(R.id.fab_categoria);
-
+        fab_sos.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.colorPrimary));
+        fab_tegoria.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.colorPrimary));
          fab_tegoria.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -467,8 +478,12 @@ public class home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         recupera_info_emergencia(requestQueue, this);
         recupera_coordenadas(requestQueue, this);
-    }
+        recupera_coordenadas_reporte(requestQueue, this);
 
+        //notificacion_app
+        notificacion_app(requestQueue, this);
+        recupera_tutorial(requestQueue, this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -503,16 +518,21 @@ public class home extends AppCompatActivity
 
             startActivity(intent);
         } else if (id == R.id.nav_share) {
+            Intent intent=new Intent(home.this, nosotros.class);
+            startActivity(intent);
 
         }else if (id == R.id.nav_send) {
             final ProgressDialog loading = ProgressDialog.show(home.this,"Cerrando sesión...","Espere por favor...",false,false);
             sesionMovilUser sm=new sesionMovilUser();
             requestQueue = Volley.newRequestQueue(home.this);
-            sm.actualizar_estado_sesion(requestQueue,"0",variablesGlobales.idusuario_movil);
+            sm.cerrar_sesion(home.this);
             loading.dismiss();
-            Intent intent=new Intent(this, MainActivity.class);
-            startActivity(intent);
             finish();
+        }else{
+            if(id==R.id.nav_tutorial){
+            Intent intent=new Intent(home.this, tutorial_youtube.class);
+                startActivity(intent);
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -765,6 +785,270 @@ public class home extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("error coordenadas:", error+"");
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+    public void recupera_coordenadas_reporte(final RequestQueue req, final Context context){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_coorde_reporte.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            if (respuestaJSON.getString("estado").equals("1")){
+                                JSONArray resultadocoordenadas = respuestaJSON.getJSONArray("coordenadasreporte");
+                                for(int i=0; i<resultadocoordenadas.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadocoordenadas.get(i);
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("5")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_otros_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("6")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_emergencias_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("7")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_actividad_sospechosa_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("8")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_delito_economico_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("9")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_agresion_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("10")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_violencia_mujer_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("11")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_robo_casa_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("12")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_robo_menor_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("13")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_robo_vehiculo_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("14")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_pandillaje_new);
+                                    }
+                                    if(resultadoItem.getString("idcategoria_reporte").equals("15")){
+                                        createMarkerSos(Double.parseDouble(resultadoItem.getString("lat")), Double.parseDouble(resultadoItem.getString("long"))
+                                                , resultadoItem.getString("descripcion_attend"), R.mipmap.marker_drogas_new);
+                                    }
+
+                                }
+                                //drawMarkers()
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error coordenadas:", error+"");
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+
+    public void notificacion_app(final RequestQueue req, final Context context){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_notificacion_app.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            if (respuestaJSON.getString("estadoconsulta").equals("1")){
+                                JSONArray resultadonotificacion = respuestaJSON.getJSONArray("notificacion_app");
+                                for(int i=0; i<resultadonotificacion.length(); i++) {
+                                    JSONObject resultadoItem = (JSONObject) resultadonotificacion.get(i);
+                                    if(resultadoItem.getString("estado").equals("1")){
+                                        notificacion_vista_app(req, context,
+                                                resultadoItem.getString("idnotificacion_app"),
+                                                resultadoItem.getString("titulo"),
+                                                resultadoItem.getString("decripcion"),
+                                                resultadoItem.getString("url_img"),
+                                                resultadoItem.getString("link"));
+                                    }
+                                }
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error Volley:", error+"");
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+
+    public void notificacion_vista_app(final RequestQueue req, final Context context,final String idnotificacion_app,
+                                       final String titulo, final String descripcion, final String img_url, final String link){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"notificacion_vista.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            if (respuestaJSON.getString("estado").equals("1")){
+
+                                JSONArray resultadonotificacion = respuestaJSON.getJSONArray("notificacion_vista");
+                                for(int i=0; i<resultadonotificacion.length(); i++) {
+                                    JSONObject resultadoItem = (JSONObject) resultadonotificacion.get(i);
+                                    if(resultadoItem.getString("cantresult").equals("0")) {
+                                        Intent intent=new Intent(home.this, notificacion_app.class);
+                                        intent.putExtra("titulo", titulo);
+                                        intent.putExtra("descripcion", descripcion);
+                                        intent.putExtra("img", img_url);
+                                        intent.putExtra("link", link);
+                                        intent.putExtra("idnotificacion_app", idnotificacion_app);
+                                        startActivity(intent);
+                                    }
+                                    }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error en volley:", error+"");
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idnotificacion_app", idnotificacion_app);
+                params.put("idusuario", variablesGlobales.idusuario_movil);
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+
+    private String PREFS_KEY = "mispreferencias";
+
+    public void savepreferencia(Context context, String dt) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = settings.edit();
+        editor.putString("preferenciaguardada", dt);
+        editor.commit();
+    }
+
+
+
+    public String getpreferencia(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        return  preferences.getString("preferenciaguardada", "");
+    }
+
+    public void recupera_contactos(final RequestQueue req, final Context context,final String idusuario){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_contactos.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            //verifica si el usuario google esta registrado
+
+                            if (respuestaJSON.getString("estado").equals("1")){
+
+                                JSONArray resultadocontactos = respuestaJSON.getJSONArray("contactos");
+                                for(int i=0; i<resultadocontactos.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadocontactos.get(i);
+                                    if(i==0){
+                                        variablesGlobales.contacto1=resultadoItem.getString("numero");
+                                    }
+                                    if(i==1){
+                                        variablesGlobales.contacto2=resultadoItem.getString("numero");
+                                    }
+                                    if(i==2){
+                                        variablesGlobales.contacto3=resultadoItem.getString("numero");
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error:", error+"");
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idusuario", idusuario);
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        req.add(stringRequest);
+    }
+
+    public void recupera_tutorial(final RequestQueue req, final Context context){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, variablesGlobales.paginaweb+"recupera_tutorial.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject respuestaJSON = new JSONObject(response.toString());
+                            //verifica si el usuario google esta registrado
+
+                            if (respuestaJSON.getString("estado").equals("1")){
+
+                                JSONArray resultadocontactos = respuestaJSON.getJSONArray("youtube");
+                                for(int i=0; i<resultadocontactos.length(); i++){
+                                    JSONObject resultadoItem = (JSONObject)resultadocontactos.get(i);
+                                    variablesGlobales.tutorial_player=resultadoItem.getString("link");
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error:", error+"");
             }
         }){
             protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {

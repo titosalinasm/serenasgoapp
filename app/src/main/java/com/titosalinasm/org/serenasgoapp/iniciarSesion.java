@@ -1,10 +1,13 @@
 package com.titosalinasm.org.serenasgoapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -84,15 +87,30 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
 
                         // Toast.makeText(this, "Nombre: "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
                         //datos del telefono
-                        String fabricante=infoMovil.getFabricante();
-                        String version_so=infoMovil.getVersionSo();
-                        String modelo=infoMovil.getModelo();
-                        String marca=infoMovil.getMarca();
-                        String imei=infoMovil.getImei(getApplicationContext());
+                        String fabricante="";
+                        String version_so="";
+                        String modelo="";
+                        String marca="";
+                        String imei="";
                         String codigo_confirmacion=infoMovil.codigoConfirmacion(10);
 
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            fabricante="Desconocido";
+                            version_so="0.00";
+                            modelo="Desconocido";
+                            marca="Desconocido";
+                            imei="Desconocido";
+                        }else{
+                            fabricante=infoMovil.getFabricante();
+                            version_so=infoMovil.getVersionSo();
+                            modelo=infoMovil.getModelo();
+                            marca=infoMovil.getMarca();
+                            imei=infoMovil.getImei(getApplicationContext());
+                        }
+
+
+
                         final ProgressDialog loading = ProgressDialog.show(iniciarSesion.this,"Verificando...","Espere por favor...",false,false);
-                        Log.d("ti ero", nombre+"|"+apellido);
                         smu.facebook_id_tjsegurity(requestQueue, profile.getId(), "", nombre, apellido, "O","", "", fabricante, version_so,  modelo, marca, imei, codigo_confirmacion, "facebook", loading, foto, iniciarSesion.this);
                        // Glide.with(iniciarSesion.this).load("https://graph.facebook.com/" +profile.getId()+ "/picture?type=small").diskCacheStrategy(DiskCacheStrategy.ALL).into(ivperfilfacebook);
 
@@ -165,6 +183,8 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
         //Starting intent for result
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+
     private void handleSignInResult(GoogleSignInResult result){
         //If the login succeed
         if (result.isSuccess()) {
@@ -188,12 +208,26 @@ public class iniciarSesion extends FragmentActivity implements View.OnClickListe
 
            // Toast.makeText(this, "Nombre: "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
             //datos del telefono
-            String fabricante=infoMovil.getFabricante();
-            String version_so=infoMovil.getVersionSo();
-            String modelo=infoMovil.getModelo();
-            String marca=infoMovil.getMarca();
-            String imei=infoMovil.getImei(getApplicationContext());
+            String fabricante="";
+            String version_so="";
+            String modelo="";
+            String marca="";
+            String imei="";
             String codigo_confirmacion=infoMovil.codigoConfirmacion(10);
+
+            if (Build.VERSION.SDK_INT >= 23) {
+                fabricante="Desconocido";
+                version_so="0.00";
+                modelo="Desconocido";
+                marca="Desconocido";
+                imei="Desconocido";
+            }else{
+                fabricante=infoMovil.getFabricante();
+                version_so=infoMovil.getVersionSo();
+                modelo=infoMovil.getModelo();
+                marca=infoMovil.getMarca();
+                imei=infoMovil.getImei(getApplicationContext());
+            }
 
             final ProgressDialog loading = ProgressDialog.show(iniciarSesion.this,"Verificando...","Espere por favor...",false,false);
             smu.google_id_tjsegurity(requestQueue, acct.getId(), "", nombre, apellido, "O","", "", fabricante, version_so,  modelo, marca, imei, codigo_confirmacion, "google", loading, ""+personPhoto,iniciarSesion.this);

@@ -1,8 +1,11 @@
 package com.titosalinasm.org.serenasgoapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -79,12 +82,26 @@ public class registrarUsuario extends AppCompatActivity implements View.OnClickL
             String direccion = etdireccion.getText().toString();
 
             //datos del telefono
-            String fabricante = infoMovil.getFabricante();
-            String version_so = infoMovil.getVersionSo();
-            String modelo = infoMovil.getModelo();
-            String marca = infoMovil.getMarca();
-            String imei = infoMovil.getImei(getApplicationContext());
-            String codigo_confirmacion = infoMovil.codigoConfirmacion(10);
+            String fabricante="";
+            String version_so="";
+            String modelo="";
+            String marca="";
+            String imei="";
+            String codigo_confirmacion=infoMovil.codigoConfirmacion(10);
+
+            if (Build.VERSION.SDK_INT >= 23) {
+                fabricante="Desconocido";
+                version_so="0.00";
+                modelo="Desconocido";
+                marca="Desconocido";
+                imei="Desconocido";
+            }else{
+                fabricante=infoMovil.getFabricante();
+                version_so=infoMovil.getVersionSo();
+                modelo=infoMovil.getModelo();
+                marca=infoMovil.getMarca();
+                imei=infoMovil.getImei(getApplicationContext());
+            }
 
             //enviando datos al servidor
             if(nombres.trim().length()>2) {
